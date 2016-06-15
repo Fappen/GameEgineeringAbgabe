@@ -11,7 +11,6 @@ using Fusee.Xene;
 using static System.Math;
 using static Fusee.Engine.Core.Input;
 using static Fusee.Engine.Core.Time;
-using System.Windows.Forms;
 #if GUI_SIMPLE
 using Fusee.Engine.Core.GUI;
 #endif
@@ -61,7 +60,7 @@ namespace Fusee.Tutorial.Core
             Height = 760;
 
             // Load the scene
-            _scene = AssetStorage.Get<SceneContainer>("TDMAPinWuggyFINAL.fus");
+            _scene = AssetStorage.Get<SceneContainer>("TDMAPinWuggyFinal.fus");
             _sceneScale = float4x4.CreateScale(0.04f);
 
 
@@ -199,30 +198,32 @@ namespace Fusee.Tutorial.Core
 
             // Wrap-around to keep _angleRoll between -PI and + PI
             _angleRoll = M.MinAngle(_angleRoll);
-            
-            
+
+            //GUI
+            RC.Projection = float4x4.CreateOrthographic(0, 0, 1280, 720);
+            RC.Viewport(0, 0, 1280, 720);
+
+            #if GUI_SIMPLE
+                guiHandler.RenderGUI();
+            #endif
+
             // Create the camera matrix and set it as the current ModelView transformation
             var mtxRot = float4x4.CreateRotationZ(_angleRoll) * float4x4.CreateRotationX(_angleVert) * float4x4.CreateRotationY(_angleHorz);
             var mtxCam = float4x4.LookAt(0, 20, -_zoom, 0, 0, 0, 0, 1, 0);
             _renderer.View = mtxCam * mtxRot * _sceneScale;
             var mtxOffset = float4x4.CreateTranslation(2 * _offset.x / Width, -2 * _offset.y / Height, 0);
             RC.Projection = mtxOffset * _projection;
-            RC.Viewport(0, 0, 1280, 720);
+            RC.Viewport(0, 0, 880, 720);
 
             RC.SetShader(_renderer.shader);
             _renderer.Traverse(_scene.Children);
 
-            #if GUI_SIMPLE
-                guiHandler.RenderGUI();
-            #endif
-
             // Setup Minimap
-            RC.Projection = float4x4.CreateOrthographic(10000, 10000, 0.01f, 50);
-            _renderer.View = float4x4.CreateRotationX(-3.141592f / 2) * float4x4.CreateTranslation(0, -10, 0);
+            RC.Projection = float4x4.CreateOrthographic(12750, 6955, -1000000.00f, 50000);
+            _renderer.View = float4x4.CreateRotationX(-3.141592f / 2) * float4x4.CreateTranslation(0, 0, -300);
 
             RC.Viewport(885, 355, 390, 240);
             
-
             RC.SetShader(_renderer.shader);
             _renderer.Traverse(_scene.Children);
             
@@ -230,23 +231,6 @@ namespace Fusee.Tutorial.Core
             Present();
 
         }
-
-        //private SceneNodeContainer GetClosest()
-        //{
-        //    float minDist = float.MaxValue;
-        //    SceneNodeContainer ret = null;
-        //    foreach (var target in _trees)
-        //    {
-        //        var xf = target.GetTransform();
-        //        float dist = (_wuggyTransform.Translation - xf.Translation).Length;
-        //        if (dist < minDist && dist < 1000)
-        //        {
-        //            ret = target;
-        //            minDist = dist;
-        //        }
-        //    }
-        //    return ret;
-        //}
 
         public static float NormRot(float rot)
         {
