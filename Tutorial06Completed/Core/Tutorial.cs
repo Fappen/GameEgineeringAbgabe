@@ -30,6 +30,8 @@ namespace Fusee.Tutorial.Core
         public IShaderParam AlbedoParam;
         public IShaderParam ShininessParam;
         public IShaderParam ShininessFactorParam;
+        public ShaderProgram shader;
+
         private Mesh LookupMesh(MeshComponent mc)
         {
             Mesh mesh;
@@ -50,42 +52,13 @@ namespace Fusee.Tutorial.Core
         public Renderer(RenderContext rc)
         {
             RC = rc;
-            // Read the Leaves.jpg image and upload it to the GPU
-            //ImageData leaves = AssetStorage.Get<ImageData>("Leaves.jpg");
-            //_leafTexture = RC.CreateTexture(leaves);
-
-            //// Initialize the shader(s)
-            //ShaderEffect = new ShaderEffect(
-
-            //    new[]
-            //    {
-            //        new EffectPassDeclaration
-            //        {
-            //            VS = AssetStorage.Get<string>("VertexShader.vert"),
-            //            PS = AssetStorage.Get<string>("PixelShader.frag"),
-            //            StateSet = new RenderStateSet
-            //            {
-            //                ZEnable = true,
-            //                CullMode = Cull.Counterclockwise,
-            //            }
-            //        }
-            //    },
-            //    new[]
-            //    {
-            //        new EffectParameterDeclaration {Name = "albedo", Value = float3.One},
-            //        new EffectParameterDeclaration {Name = "shininess", Value = 1.0f},
-            //        new EffectParameterDeclaration {Name = "specfactor", Value= 1.0f},
-            //        new EffectParameterDeclaration {Name = "speccolor", Value = float3.Zero},
-            //        new EffectParameterDeclaration {Name = "ambientcolor", Value = float3.Zero},
-            //        new EffectParameterDeclaration {Name = "texture", Value = _leafTexture},
-            //        new EffectParameterDeclaration {Name = "texmix", Value = 0.0f},
-            //    });
-            //ShaderEffect.AttachToContext(RC);
-
+           
             var vertsh = AssetStorage.Get<string>("VertexShader.vert");
             var pixsh = AssetStorage.Get<string>("PixelShader.frag");
-            var shader = RC.CreateShader(vertsh, pixsh);
+            shader = RC.CreateShader(vertsh, pixsh);
+
             RC.SetShader(shader);
+
             AlbedoParam = RC.GetShaderParam(shader, "albedo");
             ShininessParam = RC.GetShaderParam(shader, "shininess");
             ShininessFactorParam = RC.GetShaderParam(shader, "shininessFactor");
@@ -108,51 +81,11 @@ namespace Fusee.Tutorial.Core
         [VisitMethod]
         void OnMesh(MeshComponent mesh)
         {
-            // ShaderEffect.RenderMesh(LookupMesh(mesh));
             RC.Render(LookupMesh(mesh));
         }
         [VisitMethod]
         void OnMaterial(MaterialComponent material)
         {
-            /*
-            if (material.HasDiffuse)
-            {
-                ShaderEffect.SetEffectParam("albedo", material.Diffuse.Color);
-                if (material.Diffuse.Texture == "Leaves.jpg")
-                {
-                    ShaderEffect.SetEffectParam("texture", _leafTexture);
-                    ShaderEffect.SetEffectParam("texmix", 1.0f);
-                }
-                else
-                {
-                    ShaderEffect.SetEffectParam("texmix", 0.0f);
-                }
-            }
-            else
-            {
-                ShaderEffect.SetEffectParam("albedo", float3.Zero);
-            }
-            if (material.HasSpecular)
-            {
-                ShaderEffect.SetEffectParam("shininess", material.Specular.Shininess);
-                ShaderEffect.SetEffectParam("specfactor", material.Specular.Intensity);
-                ShaderEffect.SetEffectParam("speccolor", material.Specular.Color);
-            }
-            else
-            {
-                ShaderEffect.SetEffectParam("shininess", 0);
-                ShaderEffect.SetEffectParam("specfactor", 0);
-                ShaderEffect.SetEffectParam("speccolor", float3.Zero);
-            }
-            if (material.HasEmissive)
-            {
-                ShaderEffect.SetEffectParam("ambientcolor", material.Emissive.Color);
-            }
-            else
-            {
-                ShaderEffect.SetEffectParam("ambientcolor", float3.Zero);
-            }*/
-
             RC.SetShaderParam(AlbedoParam, material.Diffuse.Color);
             RC.SetShaderParam(ShininessParam, material.Specular.Shininess);
         }
@@ -185,14 +118,6 @@ namespace Fusee.Tutorial.Core
 
         private bool _keys;
 
-        //private TransformComponent _wuggyTransform;
-        //private TransformComponent _wgyWheelBigR;
-        //private TransformComponent _wgyWheelBigL;
-        //private TransformComponent _wgyWheelSmallR;
-        //private TransformComponent _wgyWheelSmallL;
-        //private TransformComponent _wgyNeckHi;
-        //private List<SceneNodeContainer> _trees;
-
         private Renderer _renderer;
 
         #if GUI_SIMPLE
@@ -218,19 +143,6 @@ namespace Fusee.Tutorial.Core
             // Instantiate our self-written renderer
             _renderer = new Renderer(RC);
 
-            // Find some transform nodes we want to manipulate in the scene
-            /*
-            _wuggyTransform = _scene.Children.FindNodes(c => c.Name == "Wuggy").First()?.GetTransform();
-            _wgyWheelBigR = _scene.Children.FindNodes(c => c.Name == "WheelBigR").First()?.GetTransform();
-            _wgyWheelBigL = _scene.Children.FindNodes(c => c.Name == "WheelBigL").First()?.GetTransform();
-            _wgyWheelSmallR = _scene.Children.FindNodes(c => c.Name == "WheelSmallR").First()?.GetTransform();
-            _wgyWheelSmallL = _scene.Children.FindNodes(c => c.Name == "WheelSmallL").First()?.GetTransform();
-            _wgyNeckHi = _scene.Children.FindNodes(c => c.Name == "NeckHi").First()?.GetTransform();
-
-            // Find the trees and store them in a list
-            _trees = new List<SceneNodeContainer>();
-            _trees.AddRange(_scene.Children.FindNodes(c => c.Name.Contains("Tree")));*/
-
 
             #if GUI_SIMPLE
             guiHandler = new GUIHandler();
@@ -240,9 +152,6 @@ namespace Fusee.Tutorial.Core
             fontCabin.UseKerning = true;
             _guiCabinBlack = new FontMap(fontCabin, 18);
 
-            /*guiFontCabin18 = RC.LoadFont("Assets/Cabin.ttf", 18);
-            guiFontCabin24 = RC.LoadFont("Assets/Cabin.ttf", 24);
-            FontMap testFont = new FontMap()*/
             guiText = new GUIText("Spot all seven differences!", _guiCabinBlack, 310, 35);
             guiText.TextColor = new float4(0.05f, 0.25f, 0.15f, 0.8f);
 
@@ -257,8 +166,6 @@ namespace Fusee.Tutorial.Core
             button1.OnGUIButtonEnter += _guiFuseeLink_OnGUIButtonEnter;
             button1.OnGUIButtonLeave += _guiFuseeLink_OnGUIButtonLeave;
             guiHandler.Add(button1);
-            //GUIButtonEventArgs buttonEventArgs = new GUIButtonEventArgs();
-            //GUIButtonHandler buttonHandler = new GUIButtonHandler(button, buttonEventArgs);
 
             // panel
             guiPanel = new GUIPanel("Menu", _guiCabinBlack, 10, 10, 150, 110);
@@ -332,45 +239,6 @@ namespace Fusee.Tutorial.Core
                     _angleVelVert *= curDamp;
                 }
             }
-            /*
-            float wuggyYawSpeed = Keyboard.WSAxis * Keyboard.ADAxis * 0.03f;
-            float wuggySpeed = Keyboard.WSAxis * -10;
-
-            // Wuggy XForm
-            float wuggyYaw = _wuggyTransform.Rotation.y;
-            wuggyYaw += wuggyYawSpeed;
-            wuggyYaw = NormRot(wuggyYaw);
-            float3 wuggyPos = _wuggyTransform.Translation;
-            wuggyPos += new float3((float)Sin(wuggyYaw), 0, (float)Cos(wuggyYaw)) * wuggySpeed;
-            _wuggyTransform.Rotation = new float3(0, wuggyYaw, 0);
-            _wuggyTransform.Translation = wuggyPos;
-
-            // Wuggy Wheels
-            _wgyWheelBigR.Rotation += new float3(wuggySpeed * 0.008f, 0, 0);
-            _wgyWheelBigL.Rotation += new float3(wuggySpeed * 0.008f, 0, 0);
-            _wgyWheelSmallR.Rotation = new float3(_wgyWheelSmallR.Rotation.x + wuggySpeed * 0.016f, -Keyboard.ADAxis * 0.3f, 0);
-            _wgyWheelSmallL.Rotation = new float3(_wgyWheelSmallR.Rotation.x + wuggySpeed * 0.016f, -Keyboard.ADAxis * 0.3f, 0);
-
-            // SCRATCH:
-            // _guiSubText.Text = target.Name + " " + target.GetComponent<TargetComponent>().ExtraInfo;
-            SceneNodeContainer target = GetClosest();
-            float camYaw = 0;
-            if (target != null)
-            {
-                float3 delta = target.GetTransform().Translation - _wuggyTransform.Translation;
-                camYaw = (float)Atan2(-delta.x, -delta.z) - _wuggyTransform.Rotation.y;
-            }
-
-            camYaw = NormRot(camYaw);
-            float deltaAngle = camYaw - _wgyNeckHi.Rotation.y;
-            if (deltaAngle > M.Pi)
-                deltaAngle = deltaAngle - M.TwoPi;
-            if (deltaAngle < -M.Pi)
-                deltaAngle = deltaAngle + M.TwoPi; ;
-            var newYaw = _wgyNeckHi.Rotation.y + (float)M.Clamp(deltaAngle, -0.06, 0.06);
-            newYaw = NormRot(newYaw);
-            _wgyNeckHi.Rotation = new float3(0, newYaw, 0);
-            */
 
             _zoom += _zoomVel;
             // Limit zoom
@@ -397,8 +265,8 @@ namespace Fusee.Tutorial.Core
             _renderer.View = mtxCam * mtxRot * _sceneScale;
             var mtxOffset = float4x4.CreateTranslation(2 * _offset.x / Width, -2 * _offset.y / Height, 0);
             RC.Projection = mtxOffset * _projection;
-            
-            
+
+            RC.SetShader(_renderer.shader);
             _renderer.Traverse(_scene.Children);
             
             #if GUI_SIMPLE
