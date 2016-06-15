@@ -11,93 +11,13 @@ using Fusee.Xene;
 using static System.Math;
 using static Fusee.Engine.Core.Input;
 using static Fusee.Engine.Core.Time;
+using System.Windows.Forms;
 #if GUI_SIMPLE
 using Fusee.Engine.Core.GUI;
 #endif
 
 namespace Fusee.Tutorial.Core
 {
-
-    class Renderer : SceneVisitor
-    {
-        //public ShaderEffect ShaderEffect;
-
-        public RenderContext RC;
-        //private ITexture _leafTexture;
-        public float4x4 View;
-        private Dictionary<MeshComponent, Mesh> _meshes = new Dictionary<MeshComponent, Mesh>();
-        private CollapsingStateStack<float4x4> _model = new CollapsingStateStack<float4x4>();
-        public IShaderParam AlbedoParam;
-        public IShaderParam ShininessParam;
-        public IShaderParam ShininessFactorParam;
-        public ShaderProgram shader;
-
-        private Mesh LookupMesh(MeshComponent mc)
-        {
-            Mesh mesh;
-            if (!_meshes.TryGetValue(mc, out mesh))
-            {
-                mesh = new Mesh
-                {
-                    Vertices = mc.Vertices,
-                    Normals = mc.Normals,
-                    UVs = mc.UVs,
-                    Triangles = mc.Triangles,
-                };
-                _meshes[mc] = mesh;
-            }
-            return mesh;
-        }
-
-        public Renderer(RenderContext rc)
-        {
-            RC = rc;
-           
-            var vertsh = AssetStorage.Get<string>("VertexShader.vert");
-            var pixsh = AssetStorage.Get<string>("PixelShader.frag");
-            shader = RC.CreateShader(vertsh, pixsh);
-
-            RC.SetShader(shader);
-
-            AlbedoParam = RC.GetShaderParam(shader, "albedo");
-            ShininessParam = RC.GetShaderParam(shader, "shininess");
-            ShininessFactorParam = RC.GetShaderParam(shader, "shininessFactor");
-        }
-
-        protected override void InitState()
-        {
-            _model.Clear();
-            _model.Tos = float4x4.Identity;
-        }
-        protected override void PushState()
-        {
-            _model.Push();
-        }
-        protected override void PopState()
-        {
-            _model.Pop();
-            RC.ModelView = View*_model.Tos;
-        }
-        [VisitMethod]
-        void OnMesh(MeshComponent mesh)
-        {
-            RC.Render(LookupMesh(mesh));
-        }
-        [VisitMethod]
-        void OnMaterial(MaterialComponent material)
-        {
-            RC.SetShaderParam(AlbedoParam, material.Diffuse.Color);
-            RC.SetShaderParam(ShininessParam, material.Specular.Shininess);
-        }
-        [VisitMethod]
-        void OnTransform(TransformComponent xform)
-        {
-            _model.Tos *= xform.Matrix();
-            RC.ModelView = View * _model.Tos;
-        }
-    }
-
-
     [FuseeApplication(Name = "Tutorial Example", Description = "The official FUSEE Tutorial.")]
     public class Tutorial : RenderCanvas
     {
@@ -122,7 +42,11 @@ namespace Fusee.Tutorial.Core
 
         #if GUI_SIMPLE
         private GUIHandler guiHandler;
-        private GUIPanel guiPanel;
+        private GUIPanel guiPanelOverall;
+        private GUIPanel guiPanelStatus;
+        private GUIPanel guiPanelMap;
+        private GUIPanel guiPanelShop;
+        private GUIPanel guiPanelWaves;
         private GUIButton button1;
         private Font fontCabin;
         private FontMap _guiCabinBlack;
@@ -132,8 +56,9 @@ namespace Fusee.Tutorial.Core
         // Init is called on startup. 
         public override void Init()
         {
-            Width = 1280;
-            Height = 720;
+            
+            Width = 1295;
+            Height = 760;
 
             // Load the scene
             _scene = AssetStorage.Get<SceneContainer>("TDMAPinWuggyFINAL.fus");
@@ -158,7 +83,7 @@ namespace Fusee.Tutorial.Core
             guiHandler.Add(guiText);
 
             
-            button1 = new GUIButton("Testbutton", _guiCabinBlack, 0, 0, 100, 30);
+            button1 = new GUIButton("Testbutton", _guiCabinBlack, 900, 500, 100, 30);
             button1.ButtonColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
             button1.BorderColor = new float4(0, 0.6f, 0.2f, 1);
             button1.BorderWidth = 0;
@@ -168,9 +93,26 @@ namespace Fusee.Tutorial.Core
             guiHandler.Add(button1);
 
             // panel
-            guiPanel = new GUIPanel("Menu", _guiCabinBlack, 10, 10, 150, 110);
-            guiHandler.Add(guiPanel);
-            #endif
+            guiPanelOverall = new GUIPanel("Defend the Village", _guiCabinBlack, 880, 0, 400, 720);
+            guiPanelOverall.PanelColor = new float4(0.0f, 0.5f, 0.5f, 1.0f);
+            //guiHandler.Add(guiPanelOverall);
+
+            guiPanelStatus = new GUIPanel("Defend the Village", _guiCabinBlack, 880, 0, 400, 120);
+            guiPanelStatus.PanelColor = new float4(1.0f, 0.5f, 0.5f, 1.0f);
+            guiHandler.Add(guiPanelStatus);
+
+            guiPanelMap = new GUIPanel("Map", _guiCabinBlack, 880, 120, 400, 250);
+            guiPanelMap.PanelColor = new float4(0.0f, 0.5f, 0.5f, 1.0f);
+            guiHandler.Add(guiPanelMap);
+
+            guiPanelShop = new GUIPanel("Shop", _guiCabinBlack, 880, 370, 400, 250);
+            guiPanelShop.PanelColor = new float4(0.5f, 0.0f, 0.5f, 1.0f);
+            guiHandler.Add(guiPanelShop);
+
+            guiPanelWaves = new GUIPanel("Wave", _guiCabinBlack, 880, 620, 400, 100);
+            guiPanelWaves.PanelColor = new float4(0.5f, 0.5f, 0.0f, 1.0f);
+            guiHandler.Add(guiPanelWaves);
+#endif
 
             // Set the clear color for the backbuffer
             RC.ClearColor = new float4(1, 1, 1, 1);
@@ -265,14 +207,25 @@ namespace Fusee.Tutorial.Core
             _renderer.View = mtxCam * mtxRot * _sceneScale;
             var mtxOffset = float4x4.CreateTranslation(2 * _offset.x / Width, -2 * _offset.y / Height, 0);
             RC.Projection = mtxOffset * _projection;
+            RC.Viewport(0, 0, 1280, 720);
+
+            RC.SetShader(_renderer.shader);
+            _renderer.Traverse(_scene.Children);
+
+            #if GUI_SIMPLE
+                guiHandler.RenderGUI();
+            #endif
+
+            // Setup Minimap
+            RC.Projection = float4x4.CreateOrthographic(10000, 10000, 0.01f, 50);
+            _renderer.View = float4x4.CreateRotationX(-3.141592f / 2) * float4x4.CreateTranslation(0, -10, 0);
+
+            RC.Viewport(885, 355, 390, 240);
+            
 
             RC.SetShader(_renderer.shader);
             _renderer.Traverse(_scene.Children);
             
-            #if GUI_SIMPLE
-                guiHandler.RenderGUI();
-               #endif
-
             // Swap buffers: Show the contents of the backbuffer (containing the currently rerndered farame) on the front buffer.
             Present();
 
