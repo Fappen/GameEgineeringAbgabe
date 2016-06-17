@@ -28,3 +28,5 @@ D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Des
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Desktop\Debug\Fusee.Tutorial06.Desktop.csprojResolveAssemblyReference.cache
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Desktop\Debug\Fusee.Tutorial.Desktop.exe
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Desktop\Debug\Fusee.Tutorial.Desktop.pdb
+C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TowerFancyMat.fus
+C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TowerNormalMat.fus

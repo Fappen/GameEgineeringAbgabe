@@ -11,6 +11,7 @@ using Fusee.Xene;
 using static System.Math;
 using static Fusee.Engine.Core.Input;
 using static Fusee.Engine.Core.Time;
+using System.IO;
 #if GUI_SIMPLE
 using Fusee.Engine.Core.GUI;
 #endif
@@ -30,6 +31,7 @@ namespace Fusee.Tutorial.Core
         private const float Damping = 0.8f;
 
         private SceneContainer _scene;
+        private SceneContainer _tower;
         private float4x4 _sceneCenter;
         private float4x4 _sceneScale;
         private float4x4 _projection;
@@ -52,6 +54,8 @@ namespace Fusee.Tutorial.Core
         private GUIText guiText;
         #endif
 
+        private List<Tower> listTowers;
+
         // Init is called on startup. 
         public override void Init()
         {
@@ -59,10 +63,16 @@ namespace Fusee.Tutorial.Core
             Width = 1295;
             Height = 760;
 
+            listTowers = new List<Tower>();
+
             // Load the scene
-            _scene = AssetStorage.Get<SceneContainer>("TDMAPinWuggyFinal.fus");
+            _scene = AssetStorage.Get<SceneContainer>("TDMAPinWuggyFINAL.fus");
+            _tower = AssetStorage.Get<SceneContainer>("TowerFancyMat.fus");
+
             _sceneScale = float4x4.CreateScale(0.04f);
 
+            listTowers.Add(new Tower(DeepCopy(_tower), new float3(0, 0, 100), 0, 0, 0));
+            listTowers.Add(new Tower(DeepCopy(_tower), new float3(0, 400, 500), 0, 0, 0));
 
             // Instantiate our self-written renderer
             _renderer = new Renderer(RC);
@@ -202,9 +212,9 @@ namespace Fusee.Tutorial.Core
             //GUI
             RC.Projection = float4x4.CreateOrthographic(0, 0, 1280, 720);
             RC.Viewport(0, 0, 1280, 720);
-
+            
             #if GUI_SIMPLE
-                guiHandler.RenderGUI();
+                //guiHandler.RenderGUI();
             #endif
 
             // Create the camera matrix and set it as the current ModelView transformation
@@ -217,6 +227,11 @@ namespace Fusee.Tutorial.Core
 
             RC.SetShader(_renderer.shader);
             _renderer.Traverse(_scene.Children);
+            
+            foreach(Tower t in listTowers)
+            {
+                _renderer.Traverse(t.Model.Children);
+            }
 
             // Setup Minimap
             RC.Projection = float4x4.CreateOrthographic(12750, 6955, -1000000.00f, 50000);
@@ -226,7 +241,12 @@ namespace Fusee.Tutorial.Core
             
             RC.SetShader(_renderer.shader);
             _renderer.Traverse(_scene.Children);
-            
+
+            foreach (Tower t in listTowers)
+            {
+                _renderer.Traverse(t.Model.Children);
+            }
+
             // Swap buffers: Show the contents of the backbuffer (containing the currently rerndered farame) on the front buffer.
             Present();
 
@@ -279,5 +299,13 @@ namespace Fusee.Tutorial.Core
         }
         #endif
 
+        public static T DeepCopy<T>(T source) where T : class
+        {
+            var ser = new Serializer();
+            var stream = new MemoryStream();
+            ser.Serialize(stream, source);
+            stream.Position = 0;
+            return ser.Deserialize(stream, null, typeof(T)) as T;
+        }
     }
 }
