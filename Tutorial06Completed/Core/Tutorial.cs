@@ -49,16 +49,22 @@ namespace Fusee.Tutorial.Core
         private GUIPanel guiPanelMap;
         private GUIPanel guiPanelShop;
         private GUIPanel guiPanelWaves;
-        private GUIButton button1;
+        
         private GUIButton startButton;
         private Font fontCabin;
         private FontMap _guiCabinBlack;
         private GUIText guiText;
+
+        private GUIButton towerButton1;
 #endif
 
 #if GUI_SIMPLE
         private GUIHandler guiHandlerMap;
         private GUIButton block1;
+        private GUIPanel panel1;
+        private GUIPanel panel2;
+        private GUIPanel panel3;
+        private GUIPanel panel4;
 #endif
 
 
@@ -115,9 +121,9 @@ namespace Fusee.Tutorial.Core
             guiPanelStatus.PanelColor = new float4(1.0f, 0.5f, 0.5f, 1.0f);
             guiHandler.Add(guiPanelStatus);
 
-            guiPanelMap = new GUIPanel("Map", _guiCabinBlack, 880, 120, 400, 250);
+            /*guiPanelMap = new GUIPanel("Map", _guiCabinBlack, 880, 120, 400, 250);
             guiPanelMap.PanelColor = new float4(0.0f, 0.5f, 0.5f, 1.0f);
-            guiHandler.Add(guiPanelMap);
+            guiHandler.Add(guiPanelMap);*/
 
             guiPanelShop = new GUIPanel("Shop", _guiCabinBlack, 880, 370, 400, 250);
             guiPanelShop.PanelColor = new float4(0.5f, 0.0f, 0.5f, 1.0f);
@@ -126,15 +132,15 @@ namespace Fusee.Tutorial.Core
             guiPanelWaves = new GUIPanel("Wave", _guiCabinBlack, 880, 620, 400, 100);
             guiPanelWaves.PanelColor = new float4(0.5f, 0.5f, 0.0f, 1.0f);
             guiHandler.Add(guiPanelWaves);
-
-            button1 = new GUIButton("Testbutton", _guiCabinBlack, 900, 500, 100, 30);
-            button1.ButtonColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
-            button1.BorderColor = new float4(0, 0.6f, 0.2f, 1);
-            button1.BorderWidth = 2;
-            button1.OnGUIButtonDown += _guiFuseeLink_OnGUIButtonDown;
-            button1.OnGUIButtonEnter += _guiFuseeLink_OnGUIButtonEnter;
-            button1.OnGUIButtonLeave += _guiFuseeLink_OnGUIButtonLeave;
-            guiHandler.Add(button1);
+            
+            towerButton1 = new GUIButton(889, 244, 10, 10);
+            towerButton1.ButtonColor = new float4(1.0f, 0.1f, 0.0f, 1.0f);
+            towerButton1.BorderColor = new float4(0, 0.6f, 0.2f, 1);
+            towerButton1.BorderWidth = 0;
+            towerButton1.OnGUIButtonDown += _guiFuseeLink_OnGUIButtonDown;
+            towerButton1.OnGUIButtonEnter += _guiFuseeLink_OnGUIButtonEnter;
+            towerButton1.OnGUIButtonLeave += _guiFuseeLink_OnGUIButtonLeave;
+            guiHandler.Add(towerButton1);
 
 #endif
 
@@ -142,7 +148,7 @@ namespace Fusee.Tutorial.Core
             guiHandlerMap = new GUIHandler();
             guiHandlerMap.AttachToContext(RC);
             
-            block1 = new GUIButton("Block", _guiCabinBlack, 900, 500, 100, 30);
+            block1 = new GUIButton("Block", _guiCabinBlack, 700, 500, 100, 30);
             block1.ButtonColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
             block1.BorderColor = new float4(0, 0.6f, 0.2f, 1);
             block1.BorderWidth = 2;
@@ -150,6 +156,22 @@ namespace Fusee.Tutorial.Core
             block1.OnGUIButtonEnter += _guiFuseeLink_OnGUIButtonEnter;
             block1.OnGUIButtonLeave += _guiFuseeLink_OnGUIButtonLeave;
             guiHandlerMap.Add(block1);
+            /*
+            panel1 = new GUIPanel("Defend the Village", _guiCabinBlack, 880, 0, 400, 120);
+            panel1.PanelColor = new float4(1.0f, 0.5f, 0.5f, 1.0f);
+            guiHandler.Add(panel1);
+
+            panel2 = new GUIPanel("Map", _guiCabinBlack, 880, 120, 400, 250);
+            panel2.PanelColor = new float4(0.0f, 0.5f, 0.5f, 1.0f);
+            guiHandler.Add(panel2);
+
+            panel3 = new GUIPanel("Shop", _guiCabinBlack, 880, 370, 400, 250);
+            panel3.PanelColor = new float4(0.5f, 0.0f, 0.5f, 1.0f);
+            guiHandlerMap.Add(panel3);
+
+            panel4 = new GUIPanel("Wave", _guiCabinBlack, 880, 620, 400, 100);
+            panel4.PanelColor = new float4(0.5f, 0.5f, 0.0f, 1.0f);
+            guiHandlerMap.Add(panel4);*/
 #endif
 
             // Set the clear color for the backbuffer
@@ -239,13 +261,42 @@ namespace Fusee.Tutorial.Core
             _angleRoll = M.MinAngle(_angleRoll);
 
             //GUI
-            RC.Projection = float4x4.CreateOrthographic(0, 0, 1280, 720);
+            //RC.Projection = float4x4.CreateOrthographic(0, 0, 1280, 720);
             RC.Viewport(0, 0, 1280, 720);
+
 
 
 #if GUI_SIMPLE
             guiHandler.RenderGUI();
 #endif
+            
+            RC.SetRenderState(new RenderStateSet
+            {
+                AlphaBlendEnable = false,
+                ZEnable = true
+            });
+
+            // Create the camera matrix and set it as the current ModelView transformation
+            var mtxRot = float4x4.CreateRotationZ(_angleRoll) * float4x4.CreateRotationX(_angleVert) * float4x4.CreateRotationY(_angleHorz);
+            var mtxCam = float4x4.LookAt(0, 20, -_zoom, 0, 0, 0, 0, 1, 0);
+            _renderer.View = mtxCam * mtxRot * _sceneScale;
+            var mtxOffset = float4x4.CreateTranslation(2 * _offset.x / Width, -2 * _offset.y / Height, 0);
+            RC.Projection = mtxOffset * _projection;
+            RC.Viewport(0, 0, 880, 720);
+
+            RC.SetShader(_renderer.shader);
+            _renderer.Traverse(_scene.Children);
+
+            foreach (Tower t in listTowers)
+            {
+                _renderer.Traverse(t.Model.Children);
+            }
+
+            foreach (Wuggy w in listWuggys)
+            {
+                _renderer.Traverse(w.Model.Children);
+            }
+
 
             // Setup Minimap
             RC.Projection = float4x4.CreateOrthographic(12750, 6955, -1000000.00f, 50000);
@@ -268,9 +319,9 @@ namespace Fusee.Tutorial.Core
             }
 
 #if GUI_SIMPLE
-            guiHandlerMap.RenderGUI();
+            //guiHandlerMap.RenderGUI();
 #endif
-
+            /*
             RC.SetRenderState(new RenderStateSet
             {
                 AlphaBlendEnable = false,
@@ -296,7 +347,8 @@ namespace Fusee.Tutorial.Core
             foreach (Wuggy w in listWuggys)
             {
                 _renderer.Traverse(w.Model.Children);
-            }
+            }*/
+
 
             // Swap buffers: Show the contents of the backbuffer (containing the currently rerndered farame) on the front buffer.
             Present();
@@ -332,15 +384,15 @@ namespace Fusee.Tutorial.Core
         #if GUI_SIMPLE
         private void _guiFuseeLink_OnGUIButtonLeave(GUIButton sender, GUIButtonEventArgs mea)
         {
-            button1.ButtonColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
-            button1.BorderWidth = 0;
+            towerButton1.ButtonColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
+            towerButton1.BorderWidth = 0;
             SetCursor(CursorType.Standard);
         }
 
         private void _guiFuseeLink_OnGUIButtonEnter(GUIButton sender, GUIButtonEventArgs mea)
         {
-            button1.ButtonColor = new float4(0.0f, 0.6f, 0.2f, 0.4f);
-            button1.BorderWidth = 1;
+            towerButton1.ButtonColor = new float4(0.0f, 0.6f, 0.2f, 0.4f);
+            towerButton1.BorderWidth = 1;
             SetCursor(CursorType.Hand);
         }
 
