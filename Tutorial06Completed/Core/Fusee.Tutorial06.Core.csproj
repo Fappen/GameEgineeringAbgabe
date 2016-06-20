@@ -47,6 +47,7 @@
     <Compile Include="Renderer.cs" />
     <Compile Include="Tower.cs" />
     <Compile Include="Tutorial.cs" />
+    <Compile Include="Wuggy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Fusee.Base.Common">
@@ -121,6 +122,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\TowerNormalMat.fus">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\TowerRed.fus">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Wuggy.fus">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

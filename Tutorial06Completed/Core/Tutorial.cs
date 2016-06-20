@@ -12,6 +12,7 @@ using static System.Math;
 using static Fusee.Engine.Core.Input;
 using static Fusee.Engine.Core.Time;
 using System.IO;
+using System;
 #if GUI_SIMPLE
 using Fusee.Engine.Core.GUI;
 #endif
@@ -32,7 +33,7 @@ namespace Fusee.Tutorial.Core
 
         private SceneContainer _scene;
         private SceneContainer _tower;
-        private float4x4 _sceneCenter;
+        private SceneContainer _wuggy;
         private float4x4 _sceneScale;
         private float4x4 _projection;
         private bool _twoTouchRepeated;
@@ -41,7 +42,7 @@ namespace Fusee.Tutorial.Core
 
         private Renderer _renderer;
 
-        #if GUI_SIMPLE
+#if GUI_SIMPLE
         private GUIHandler guiHandler;
         private GUIPanel guiPanelOverall;
         private GUIPanel guiPanelStatus;
@@ -49,12 +50,21 @@ namespace Fusee.Tutorial.Core
         private GUIPanel guiPanelShop;
         private GUIPanel guiPanelWaves;
         private GUIButton button1;
+        private GUIButton startButton;
         private Font fontCabin;
         private FontMap _guiCabinBlack;
         private GUIText guiText;
-        #endif
+#endif
+
+#if GUI_SIMPLE
+        private GUIHandler guiHandlerMap;
+        private GUIButton block1;
+#endif
+
 
         private List<Tower> listTowers;
+        private List<Wuggy> listWuggys;
+
 
         // Init is called on startup. 
         public override void Init()
@@ -64,21 +74,26 @@ namespace Fusee.Tutorial.Core
             Height = 760;
 
             listTowers = new List<Tower>();
+            listWuggys = new List<Wuggy>();
 
             // Load the scene
             _scene = AssetStorage.Get<SceneContainer>("TDMAPinWuggyFINAL.fus");
-            _tower = AssetStorage.Get<SceneContainer>("TowerFancyMat.fus");
+            _tower = AssetStorage.Get<SceneContainer>("TowerRed.fus");
+            //_wuggy = AssetStorage.Get<SceneContainer>("WuggyLand.fus");
+
 
             _sceneScale = float4x4.CreateScale(0.04f);
 
             listTowers.Add(new Tower(DeepCopy(_tower), new float3(0, 0, 100), 0, 0, 0));
             listTowers.Add(new Tower(DeepCopy(_tower), new float3(0, 400, 500), 0, 0, 0));
 
+            //listWuggys.Add(new Wuggy(DeepCopy(_wuggy), new float3(0, 500, 750), 1, new float3(0.2f, 0.9f, 0.2f), 0, 1));
+
             // Instantiate our self-written renderer
             _renderer = new Renderer(RC);
 
 
-            #if GUI_SIMPLE
+#if GUI_SIMPLE
             guiHandler = new GUIHandler();
             guiHandler.AttachToContext(RC);
 
@@ -86,20 +101,10 @@ namespace Fusee.Tutorial.Core
             fontCabin.UseKerning = true;
             _guiCabinBlack = new FontMap(fontCabin, 18);
 
-            guiText = new GUIText("Spot all seven differences!", _guiCabinBlack, 310, 35);
+            guiText = new GUIText("Defend!", _guiCabinBlack, 310, 35);
             guiText.TextColor = new float4(0.05f, 0.25f, 0.15f, 0.8f);
 
             guiHandler.Add(guiText);
-
-            
-            button1 = new GUIButton("Testbutton", _guiCabinBlack, 900, 500, 100, 30);
-            button1.ButtonColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
-            button1.BorderColor = new float4(0, 0.6f, 0.2f, 1);
-            button1.BorderWidth = 0;
-            button1.OnGUIButtonDown += _guiFuseeLink_OnGUIButtonDown;
-            button1.OnGUIButtonEnter += _guiFuseeLink_OnGUIButtonEnter;
-            button1.OnGUIButtonLeave += _guiFuseeLink_OnGUIButtonLeave;
-            guiHandler.Add(button1);
 
             // panel
             guiPanelOverall = new GUIPanel("Defend the Village", _guiCabinBlack, 880, 0, 400, 720);
@@ -121,6 +126,30 @@ namespace Fusee.Tutorial.Core
             guiPanelWaves = new GUIPanel("Wave", _guiCabinBlack, 880, 620, 400, 100);
             guiPanelWaves.PanelColor = new float4(0.5f, 0.5f, 0.0f, 1.0f);
             guiHandler.Add(guiPanelWaves);
+
+            button1 = new GUIButton("Testbutton", _guiCabinBlack, 900, 500, 100, 30);
+            button1.ButtonColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
+            button1.BorderColor = new float4(0, 0.6f, 0.2f, 1);
+            button1.BorderWidth = 2;
+            button1.OnGUIButtonDown += _guiFuseeLink_OnGUIButtonDown;
+            button1.OnGUIButtonEnter += _guiFuseeLink_OnGUIButtonEnter;
+            button1.OnGUIButtonLeave += _guiFuseeLink_OnGUIButtonLeave;
+            guiHandler.Add(button1);
+
+#endif
+
+#if GUI_SIMPLE
+            guiHandlerMap = new GUIHandler();
+            guiHandlerMap.AttachToContext(RC);
+            
+            block1 = new GUIButton("Block", _guiCabinBlack, 900, 500, 100, 30);
+            block1.ButtonColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
+            block1.BorderColor = new float4(0, 0.6f, 0.2f, 1);
+            block1.BorderWidth = 2;
+            block1.OnGUIButtonDown += _guiFuseeLink_OnGUIButtonDown;
+            block1.OnGUIButtonEnter += _guiFuseeLink_OnGUIButtonEnter;
+            block1.OnGUIButtonLeave += _guiFuseeLink_OnGUIButtonLeave;
+            guiHandlerMap.Add(block1);
 #endif
 
             // Set the clear color for the backbuffer
@@ -197,7 +226,7 @@ namespace Fusee.Tutorial.Core
                 _zoom = 80;
             if (_zoom > 2000)
                 _zoom = 2000;
-            
+
             _angleHorz += _angleVelHorz;
             // Wrap-around to keep _angleHorz between -PI and + PI
             _angleHorz = M.MinAngle(_angleHorz);
@@ -212,11 +241,42 @@ namespace Fusee.Tutorial.Core
             //GUI
             RC.Projection = float4x4.CreateOrthographic(0, 0, 1280, 720);
             RC.Viewport(0, 0, 1280, 720);
-            
-            #if GUI_SIMPLE
-                //guiHandler.RenderGUI();
-            #endif
 
+
+#if GUI_SIMPLE
+            guiHandler.RenderGUI();
+#endif
+
+            // Setup Minimap
+            RC.Projection = float4x4.CreateOrthographic(12750, 6955, -1000000.00f, 50000);
+            _renderer.View = float4x4.CreateRotationX(-3.141592f / 2) * float4x4.CreateTranslation(0, 0, -300);
+
+            RC.Viewport(885, 355, 390, 240);
+
+            RC.SetShader(_renderer.shader);
+            _renderer.Traverse(_scene.Children);
+
+
+            foreach (Tower t in listTowers)
+            {
+                _renderer.Traverse(t.Model.Children);
+            }
+
+            foreach (Wuggy w in listWuggys)
+            {
+                _renderer.Traverse(w.Model.Children);
+            }
+
+#if GUI_SIMPLE
+            guiHandlerMap.RenderGUI();
+#endif
+
+            RC.SetRenderState(new RenderStateSet
+            {
+                AlphaBlendEnable = false,
+                ZEnable = true
+            });
+            
             // Create the camera matrix and set it as the current ModelView transformation
             var mtxRot = float4x4.CreateRotationZ(_angleRoll) * float4x4.CreateRotationX(_angleVert) * float4x4.CreateRotationY(_angleHorz);
             var mtxCam = float4x4.LookAt(0, 20, -_zoom, 0, 0, 0, 0, 1, 0);
@@ -227,24 +287,15 @@ namespace Fusee.Tutorial.Core
 
             RC.SetShader(_renderer.shader);
             _renderer.Traverse(_scene.Children);
-            
-            foreach(Tower t in listTowers)
-            {
-                _renderer.Traverse(t.Model.Children);
-            }
-
-            // Setup Minimap
-            RC.Projection = float4x4.CreateOrthographic(12750, 6955, -1000000.00f, 50000);
-            _renderer.View = float4x4.CreateRotationX(-3.141592f / 2) * float4x4.CreateTranslation(0, 0, -300);
-
-            RC.Viewport(885, 355, 390, 240);
-            
-            RC.SetShader(_renderer.shader);
-            _renderer.Traverse(_scene.Children);
 
             foreach (Tower t in listTowers)
             {
                 _renderer.Traverse(t.Model.Children);
+            }
+
+            foreach (Wuggy w in listWuggys)
+            {
+                _renderer.Traverse(w.Model.Children);
             }
 
             // Swap buffers: Show the contents of the backbuffer (containing the currently rerndered farame) on the front buffer.
@@ -295,9 +346,12 @@ namespace Fusee.Tutorial.Core
 
         void _guiFuseeLink_OnGUIButtonDown(GUIButton sender, GUIButtonEventArgs mea)
         {
-            OpenLink("http://fusee3d.org");
+            Random random = new Random();
+            for (int i = 0; i < 10; i++) {
+                listTowers.Add(new Tower(DeepCopy(_tower), new float3(random.Next(0, 1000), random.Next(0, 1000), random.Next(0, 1000)), 0, 0, 0));
+            }
         }
-        #endif
+#endif
 
         public static T DeepCopy<T>(T source) where T : class
         {

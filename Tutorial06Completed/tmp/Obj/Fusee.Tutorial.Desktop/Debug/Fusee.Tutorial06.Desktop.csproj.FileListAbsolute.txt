@@ -30,3 +30,5 @@ D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Desktop\Debug\Fusee.Tutorial.Desktop.pdb
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TowerFancyMat.fus
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TowerNormalMat.fus
+C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TowerRed.fus
+C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\Wuggy.fus
