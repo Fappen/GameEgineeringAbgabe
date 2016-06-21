@@ -32,3 +32,5 @@ C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\De
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Core\Debug\Fusee.Tutorial06.Core.csprojResolveAssemblyReference.cache
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\TowerRed.fus
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\Wuggy.fus
+C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\Wuggy_exp.fus
+C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\WuggyFromLand.fus

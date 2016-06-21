@@ -55,7 +55,10 @@ namespace Fusee.Tutorial.Core
         private FontMap _guiCabinBlack;
         private GUIText guiText;
 
-        private GUIButton towerButton1;
+        private float4 standardColor;
+        
+        private List<GUIButton> mapButtons;
+        //private GUIButton towerButton1;
 #endif
 
 #if GUI_SIMPLE
@@ -85,19 +88,16 @@ namespace Fusee.Tutorial.Core
             // Load the scene
             _scene = AssetStorage.Get<SceneContainer>("TDMAPinWuggyFINAL.fus");
             _tower = AssetStorage.Get<SceneContainer>("TowerRed.fus");
-            //_wuggy = AssetStorage.Get<SceneContainer>("WuggyLand.fus");
-
+            _wuggy = AssetStorage.Get<SceneContainer>("WuggyFromLand.fus");
 
             _sceneScale = float4x4.CreateScale(0.04f);
 
-            listTowers.Add(new Tower(DeepCopy(_tower), new float3(0, 0, 100), 0, 0, 0));
-            listTowers.Add(new Tower(DeepCopy(_tower), new float3(0, 400, 500), 0, 0, 0));
-
-            //listWuggys.Add(new Wuggy(DeepCopy(_wuggy), new float3(0, 500, 750), 1, new float3(0.2f, 0.9f, 0.2f), 0, 1));
+            listWuggys.Add(new Wuggy(DeepCopy(_wuggy), new float3(0, 0, 750), 8, new float3(0.2f, 0.9f, 0.2f), 0, 1));
 
             // Instantiate our self-written renderer
             _renderer = new Renderer(RC);
 
+            standardColor = new float4(0.9f, 0.1f, 0.0f, 1.0f);
 
 #if GUI_SIMPLE
             guiHandler = new GUIHandler();
@@ -132,46 +132,177 @@ namespace Fusee.Tutorial.Core
             guiPanelWaves = new GUIPanel("Wave", _guiCabinBlack, 880, 620, 400, 100);
             guiPanelWaves.PanelColor = new float4(0.5f, 0.5f, 0.0f, 1.0f);
             guiHandler.Add(guiPanelWaves);
-            
-            towerButton1 = new GUIButton(889, 244, 10, 10);
-            towerButton1.ButtonColor = new float4(1.0f, 0.1f, 0.0f, 1.0f);
-            towerButton1.BorderColor = new float4(0, 0.6f, 0.2f, 1);
-            towerButton1.BorderWidth = 0;
-            towerButton1.OnGUIButtonDown += _guiFuseeLink_OnGUIButtonDown;
-            towerButton1.OnGUIButtonEnter += _guiFuseeLink_OnGUIButtonEnter;
-            towerButton1.OnGUIButtonLeave += _guiFuseeLink_OnGUIButtonLeave;
-            guiHandler.Add(towerButton1);
 
-#endif
+            mapButtons = new List<GUIButton>();
 
-#if GUI_SIMPLE
-            guiHandlerMap = new GUIHandler();
-            guiHandlerMap.AttachToContext(RC);
-            
-            block1 = new GUIButton("Block", _guiCabinBlack, 700, 500, 100, 30);
-            block1.ButtonColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
-            block1.BorderColor = new float4(0, 0.6f, 0.2f, 1);
-            block1.BorderWidth = 2;
-            block1.OnGUIButtonDown += _guiFuseeLink_OnGUIButtonDown;
-            block1.OnGUIButtonEnter += _guiFuseeLink_OnGUIButtonEnter;
-            block1.OnGUIButtonLeave += _guiFuseeLink_OnGUIButtonLeave;
-            guiHandlerMap.Add(block1);
-            /*
-            panel1 = new GUIPanel("Defend the Village", _guiCabinBlack, 880, 0, 400, 120);
-            panel1.PanelColor = new float4(1.0f, 0.5f, 0.5f, 1.0f);
-            guiHandler.Add(panel1);
+            for (int i = 0; i < 146; i++)
+            {
+                mapButtons.Add(new GUIButton(500, 500, 8, 8));
+                mapButtons[i].ButtonColor = standardColor;
+                mapButtons[i].BorderWidth = 0;
+                mapButtons[i].OnGUIButtonDown += mapOnGUIButtonDown;
+                mapButtons[i].OnGUIButtonEnter += mapOnGUIButtonEnter;
+                mapButtons[i].OnGUIButtonLeave += mapOnGUIButtonLeave;
+            }
 
-            panel2 = new GUIPanel("Map", _guiCabinBlack, 880, 120, 400, 250);
-            panel2.PanelColor = new float4(0.0f, 0.5f, 0.5f, 1.0f);
-            guiHandler.Add(panel2);
+#region MapButtons
+            //mapButtons[136].ButtonColor = new float4(0, 0, 1.0f, 1.0f);
 
-            panel3 = new GUIPanel("Shop", _guiCabinBlack, 880, 370, 400, 250);
-            panel3.PanelColor = new float4(0.5f, 0.0f, 0.5f, 1.0f);
-            guiHandlerMap.Add(panel3);
 
-            panel4 = new GUIPanel("Wave", _guiCabinBlack, 880, 620, 400, 100);
-            panel4.PanelColor = new float4(0.5f, 0.5f, 0.0f, 1.0f);
-            guiHandlerMap.Add(panel4);*/
+            setButtonPosition(mapButtons[0], 889, 244);
+            setButtonPosition(mapButtons[1], 889, 244);
+            setButtonPosition(mapButtons[2], 889, 244);
+            setButtonPosition(mapButtons[3], 889, 244);
+            setButtonPosition(mapButtons[4], 889, 244);
+            setButtonPosition(mapButtons[5], 889, 244);
+            setButtonPosition(mapButtons[6], 889, 244);
+            setButtonPosition(mapButtons[7], 889, 244);
+            setButtonPosition(mapButtons[8], 889, 244);
+            setButtonPosition(mapButtons[9], 979, 290);
+            setButtonPosition(mapButtons[10], 967, 290);
+            setButtonPosition(mapButtons[11], 955, 290);
+            setButtonPosition(mapButtons[12], 942, 290);
+            setButtonPosition(mapButtons[13], 942, 314);
+            setButtonPosition(mapButtons[14], 955, 314);
+            setButtonPosition(mapButtons[15], 967, 314);
+            setButtonPosition(mapButtons[16], 979, 314);
+            setButtonPosition(mapButtons[17], 889, 244);
+            setButtonPosition(mapButtons[18], 889, 244);
+            setButtonPosition(mapButtons[19], 889, 244);
+            setButtonPosition(mapButtons[20], 889, 244);
+            setButtonPosition(mapButtons[21], 889, 244);
+            setButtonPosition(mapButtons[22], 889, 244);
+            setButtonPosition(mapButtons[23], 889, 244);
+            setButtonPosition(mapButtons[24], 889, 244);
+            setButtonPosition(mapButtons[25], 889, 244);
+            setButtonPosition(mapButtons[26], 889, 244);
+            setButtonPosition(mapButtons[27], 889, 244);
+            setButtonPosition(mapButtons[28], 889, 244);
+            setButtonPosition(mapButtons[29], 889, 244);
+            setButtonPosition(mapButtons[30], 889, 244);
+            setButtonPosition(mapButtons[31], 889, 244);
+            setButtonPosition(mapButtons[32], 889, 244);
+            setButtonPosition(mapButtons[33], 889, 244);
+            setButtonPosition(mapButtons[34], 889, 244);
+            setButtonPosition(mapButtons[35], 889, 244);
+            setButtonPosition(mapButtons[36], 889, 244);
+            setButtonPosition(mapButtons[37], 889, 244);
+            setButtonPosition(mapButtons[38], 889, 244);
+            setButtonPosition(mapButtons[39], 889, 244);
+            setButtonPosition(mapButtons[40], 889, 244);
+            setButtonPosition(mapButtons[41], 889, 244);
+            setButtonPosition(mapButtons[42], 889, 244);
+            setButtonPosition(mapButtons[43], 889, 244);
+            setButtonPosition(mapButtons[44], 889, 244);
+            setButtonPosition(mapButtons[45], 889, 244);
+            setButtonPosition(mapButtons[46], 889, 244);
+            setButtonPosition(mapButtons[47], 889, 244);
+            setButtonPosition(mapButtons[48], 889, 244);
+            setButtonPosition(mapButtons[49], 889, 244);
+            setButtonPosition(mapButtons[50], 889, 244);
+            setButtonPosition(mapButtons[51], 889, 244);
+            setButtonPosition(mapButtons[52], 889, 244);
+            setButtonPosition(mapButtons[53], 889, 244);
+            setButtonPosition(mapButtons[54], 889, 244);
+            setButtonPosition(mapButtons[55], 889, 244);
+            setButtonPosition(mapButtons[56], 889, 244);
+            setButtonPosition(mapButtons[57], 889, 244);
+            setButtonPosition(mapButtons[58], 889, 244);
+            setButtonPosition(mapButtons[59], 889, 244);
+            setButtonPosition(mapButtons[60], 889, 244);
+            setButtonPosition(mapButtons[61], 889, 244);
+            setButtonPosition(mapButtons[62], 889, 244);
+            setButtonPosition(mapButtons[63], 889, 244);
+            setButtonPosition(mapButtons[64], 889, 244);
+            setButtonPosition(mapButtons[65], 889, 244);
+            setButtonPosition(mapButtons[66], 889, 244);
+            setButtonPosition(mapButtons[67], 889, 244);
+            setButtonPosition(mapButtons[68], 889, 244);
+            setButtonPosition(mapButtons[69], 889, 244);
+            setButtonPosition(mapButtons[70], 889, 244);
+            setButtonPosition(mapButtons[71], 889, 244);
+            setButtonPosition(mapButtons[72], 889, 244);
+            setButtonPosition(mapButtons[73], 889, 244);
+            setButtonPosition(mapButtons[74], 889, 244);
+            setButtonPosition(mapButtons[75], 889, 244);
+            setButtonPosition(mapButtons[76], 889, 244);
+            setButtonPosition(mapButtons[77], 889, 244);
+            setButtonPosition(mapButtons[78], 889, 244);
+            setButtonPosition(mapButtons[79], 889, 244);
+            setButtonPosition(mapButtons[80], 889, 244);
+            setButtonPosition(mapButtons[81], 889, 244);
+            setButtonPosition(mapButtons[82], 889, 244);
+            setButtonPosition(mapButtons[83], 889, 244);
+            setButtonPosition(mapButtons[84], 889, 244);
+            setButtonPosition(mapButtons[85], 889, 244);
+            setButtonPosition(mapButtons[86], 889, 244);
+            setButtonPosition(mapButtons[87], 889, 244);
+            setButtonPosition(mapButtons[88], 889, 244);
+            setButtonPosition(mapButtons[89], 889, 244);
+            setButtonPosition(mapButtons[90], 889, 244);
+            setButtonPosition(mapButtons[91], 889, 244);
+            setButtonPosition(mapButtons[92], 889, 244);
+            setButtonPosition(mapButtons[93], 889, 244);
+            setButtonPosition(mapButtons[94], 889, 244);
+            setButtonPosition(mapButtons[95], 889, 244);
+            setButtonPosition(mapButtons[96], 889, 244);
+            setButtonPosition(mapButtons[97], 889, 244);
+            setButtonPosition(mapButtons[98], 889, 244);
+            setButtonPosition(mapButtons[99], 889, 244);
+            setButtonPosition(mapButtons[100], 889, 244);
+            setButtonPosition(mapButtons[101], 889, 244);
+            setButtonPosition(mapButtons[102], 889, 244);
+            setButtonPosition(mapButtons[103], 889, 244);
+            setButtonPosition(mapButtons[104], 889, 244);
+            setButtonPosition(mapButtons[105], 889, 244);
+            setButtonPosition(mapButtons[106], 889, 244);
+            setButtonPosition(mapButtons[107], 889, 244);
+            setButtonPosition(mapButtons[108], 889, 244);
+            setButtonPosition(mapButtons[109], 889, 244);
+            setButtonPosition(mapButtons[110], 889, 244);
+            setButtonPosition(mapButtons[111], 889, 244);
+            setButtonPosition(mapButtons[112], 889, 244);
+            setButtonPosition(mapButtons[113], 889, 244);
+            setButtonPosition(mapButtons[114], 889, 244);
+            setButtonPosition(mapButtons[115], 889, 244);
+            setButtonPosition(mapButtons[116], 889, 244);
+            setButtonPosition(mapButtons[117], 889, 244);
+            setButtonPosition(mapButtons[118], 889, 244);
+            setButtonPosition(mapButtons[119], 889, 244);
+            setButtonPosition(mapButtons[120], 889, 244);
+            setButtonPosition(mapButtons[121], 889, 244);
+            setButtonPosition(mapButtons[122], 889, 244);
+            setButtonPosition(mapButtons[123], 889, 244);
+            setButtonPosition(mapButtons[124], 942, 276);
+            setButtonPosition(mapButtons[125], 942, 261);
+            setButtonPosition(mapButtons[126], 915, 209);
+            setButtonPosition(mapButtons[127], 915, 227);
+            setButtonPosition(mapButtons[128], 915, 245);
+            setButtonPosition(mapButtons[129], 915, 191);
+            setButtonPosition(mapButtons[130], 889, 191);
+            setButtonPosition(mapButtons[131], 889, 245);
+            setButtonPosition(mapButtons[132], 889, 227);
+            setButtonPosition(mapButtons[133], 889, 209);
+            setButtonPosition(mapButtons[134], 912, 276);
+            setButtonPosition(mapButtons[135], 912, 290);
+            setButtonPosition(mapButtons[136], 928, 314);
+            setButtonPosition(mapButtons[137], 912, 305);
+            setButtonPosition(mapButtons[138], 928, 245);
+            setButtonPosition(mapButtons[139], 915, 161);
+            setButtonPosition(mapButtons[140], 928, 161);
+            setButtonPosition(mapButtons[141], 901, 161);
+            setButtonPosition(mapButtons[142], 889, 174);
+            setButtonPosition(mapButtons[143], 889, 244);
+            setButtonPosition(mapButtons[144], 899, 276);
+            setButtonPosition(mapButtons[145], 886, 276);
+#endregion
+
+
+            foreach (GUIButton gb in mapButtons)
+            {
+                guiHandler.Add(gb);
+            }
+
 #endif
 
             // Set the clear color for the backbuffer
@@ -275,58 +406,6 @@ namespace Fusee.Tutorial.Core
                 AlphaBlendEnable = false,
                 ZEnable = true
             });
-
-            // Create the camera matrix and set it as the current ModelView transformation
-            var mtxRot = float4x4.CreateRotationZ(_angleRoll) * float4x4.CreateRotationX(_angleVert) * float4x4.CreateRotationY(_angleHorz);
-            var mtxCam = float4x4.LookAt(0, 20, -_zoom, 0, 0, 0, 0, 1, 0);
-            _renderer.View = mtxCam * mtxRot * _sceneScale;
-            var mtxOffset = float4x4.CreateTranslation(2 * _offset.x / Width, -2 * _offset.y / Height, 0);
-            RC.Projection = mtxOffset * _projection;
-            RC.Viewport(0, 0, 880, 720);
-
-            RC.SetShader(_renderer.shader);
-            _renderer.Traverse(_scene.Children);
-
-            foreach (Tower t in listTowers)
-            {
-                _renderer.Traverse(t.Model.Children);
-            }
-
-            foreach (Wuggy w in listWuggys)
-            {
-                _renderer.Traverse(w.Model.Children);
-            }
-
-
-            // Setup Minimap
-            RC.Projection = float4x4.CreateOrthographic(12750, 6955, -1000000.00f, 50000);
-            _renderer.View = float4x4.CreateRotationX(-3.141592f / 2) * float4x4.CreateTranslation(0, 0, -300);
-
-            RC.Viewport(885, 355, 390, 240);
-
-            RC.SetShader(_renderer.shader);
-            _renderer.Traverse(_scene.Children);
-
-
-            foreach (Tower t in listTowers)
-            {
-                _renderer.Traverse(t.Model.Children);
-            }
-
-            foreach (Wuggy w in listWuggys)
-            {
-                _renderer.Traverse(w.Model.Children);
-            }
-
-#if GUI_SIMPLE
-            //guiHandlerMap.RenderGUI();
-#endif
-            /*
-            RC.SetRenderState(new RenderStateSet
-            {
-                AlphaBlendEnable = false,
-                ZEnable = true
-            });
             
             // Create the camera matrix and set it as the current ModelView transformation
             var mtxRot = float4x4.CreateRotationZ(_angleRoll) * float4x4.CreateRotationX(_angleVert) * float4x4.CreateRotationY(_angleHorz);
@@ -347,8 +426,28 @@ namespace Fusee.Tutorial.Core
             foreach (Wuggy w in listWuggys)
             {
                 _renderer.Traverse(w.Model.Children);
-            }*/
+            }
+            
 
+            // Setup Minimap
+            RC.Projection = float4x4.CreateOrthographic(12750, 6955, -1000000.00f, 50000);
+            _renderer.View = float4x4.CreateRotationX(-3.141592f / 2) * float4x4.CreateTranslation(0, 0, -300);
+
+            RC.Viewport(885, 355, 390, 240);
+
+            RC.SetShader(_renderer.shader);
+            _renderer.Traverse(_scene.Children);
+
+
+            foreach (Tower t in listTowers)
+            {
+                _renderer.Traverse(t.Model.Children);
+            }
+
+            foreach (Wuggy w in listWuggys)
+            {
+                _renderer.Traverse(w.Model.Children);
+            }
 
             // Swap buffers: Show the contents of the backbuffer (containing the currently rerndered farame) on the front buffer.
             Present();
@@ -373,7 +472,7 @@ namespace Fusee.Tutorial.Core
             RC.Viewport(0, 0, Width, Height);
 
             // Create a new projection matrix generating undistorted images on the new aspect ratio.
-            var aspectRatio = Width / (float)Height;
+            var aspectRatio = (Width-400) / (float)Height;
 
             // 0.25*PI Rad -> 45° Opening angle along the vertical direction. Horizontal opening angle is calculated based on the aspect ratio
             // Front clipping happens at 1 (Objects nearer than 1 world unit get clipped)
@@ -381,28 +480,40 @@ namespace Fusee.Tutorial.Core
             _projection = float4x4.CreatePerspectiveFieldOfView(M.PiOver4, aspectRatio, 1, 20000);
         }
 
-        #if GUI_SIMPLE
-        private void _guiFuseeLink_OnGUIButtonLeave(GUIButton sender, GUIButtonEventArgs mea)
+
+
+#if GUI_SIMPLE
+        public void setButtonPosition(GUIButton button, int posX, int posY)
         {
-            towerButton1.ButtonColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
-            towerButton1.BorderWidth = 0;
+            button.PosX = posX;
+            button.PosY = posY;
+        }
+
+        private void mapOnGUIButtonLeave(GUIButton sender, GUIButtonEventArgs mea)
+        {
+            sender.ButtonColor = standardColor;
             SetCursor(CursorType.Standard);
         }
 
-        private void _guiFuseeLink_OnGUIButtonEnter(GUIButton sender, GUIButtonEventArgs mea)
+        private void mapOnGUIButtonEnter(GUIButton sender, GUIButtonEventArgs mea)
         {
-            towerButton1.ButtonColor = new float4(0.0f, 0.6f, 0.2f, 0.4f);
-            towerButton1.BorderWidth = 1;
+            sender.ButtonColor = new float4(0.0f, 0.6f, 0.2f, 0.4f);
             SetCursor(CursorType.Hand);
         }
 
-        void _guiFuseeLink_OnGUIButtonDown(GUIButton sender, GUIButtonEventArgs mea)
+        void mapOnGUIButtonDown(GUIButton sender, GUIButtonEventArgs mea)
         {
-            Random random = new Random();
+            string name = "Würfel." + mapButtons.FindIndex(a => a == sender).ToString();
+            float3 position = _scene.Children.FindNodes(n => n.Name == name).First().GetTransform().Translation;
+            position.y = position.y + 100.0f;
+            listTowers.Add(new Tower(DeepCopy(_tower), position, 0, 0, 0));
+            /*Random random = new Random();
             for (int i = 0; i < 10; i++) {
                 listTowers.Add(new Tower(DeepCopy(_tower), new float3(random.Next(0, 1000), random.Next(0, 1000), random.Next(0, 1000)), 0, 0, 0));
-            }
+            }*/
         }
+
+
 #endif
 
         public static T DeepCopy<T>(T source) where T : class
