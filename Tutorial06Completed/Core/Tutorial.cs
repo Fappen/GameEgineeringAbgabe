@@ -149,15 +149,15 @@ namespace Fusee.Tutorial.Core
             //mapButtons[136].ButtonColor = new float4(0, 0, 1.0f, 1.0f);
 
 
-            setButtonPosition(mapButtons[0], 889, 244);
-            setButtonPosition(mapButtons[1], 889, 244);
-            setButtonPosition(mapButtons[2], 889, 244);
-            setButtonPosition(mapButtons[3], 889, 244);
-            setButtonPosition(mapButtons[4], 889, 244);
-            setButtonPosition(mapButtons[5], 889, 244);
-            setButtonPosition(mapButtons[6], 889, 244);
-            setButtonPosition(mapButtons[7], 889, 244);
-            setButtonPosition(mapButtons[8], 889, 244);
+            setButtonPosition(mapButtons[0], 945, 219);
+            setButtonPosition(mapButtons[1], 932, 219);
+            setButtonPosition(mapButtons[2], 957, 219);
+            setButtonPosition(mapButtons[3], 969, 219);
+            setButtonPosition(mapButtons[4], 981, 219);
+            setButtonPosition(mapButtons[5], 981, 197);
+            setButtonPosition(mapButtons[6], 967, 197);
+            setButtonPosition(mapButtons[7], 953, 197);
+            setButtonPosition(mapButtons[8], 939, 197);
             setButtonPosition(mapButtons[9], 979, 290);
             setButtonPosition(mapButtons[10], 967, 290);
             setButtonPosition(mapButtons[11], 955, 290);
@@ -166,13 +166,13 @@ namespace Fusee.Tutorial.Core
             setButtonPosition(mapButtons[14], 955, 314);
             setButtonPosition(mapButtons[15], 967, 314);
             setButtonPosition(mapButtons[16], 979, 314);
-            setButtonPosition(mapButtons[17], 889, 244);
-            setButtonPosition(mapButtons[18], 889, 244);
-            setButtonPosition(mapButtons[19], 889, 244);
-            setButtonPosition(mapButtons[20], 889, 244);
-            setButtonPosition(mapButtons[21], 889, 244);
-            setButtonPosition(mapButtons[22], 889, 244);
-            setButtonPosition(mapButtons[23], 889, 244);
+            setButtonPosition(mapButtons[17], 1044, 314);
+            setButtonPosition(mapButtons[18], 1032, 314);
+            setButtonPosition(mapButtons[19], 1020, 314);
+            setButtonPosition(mapButtons[20], 1008, 314);
+            setButtonPosition(mapButtons[21], 1057, 314);
+            setButtonPosition(mapButtons[22], 1069, 314);
+            setButtonPosition(mapButtons[23], 1081, 314);
             setButtonPosition(mapButtons[24], 889, 244);
             setButtonPosition(mapButtons[25], 889, 244);
             setButtonPosition(mapButtons[26], 889, 244);
@@ -187,18 +187,18 @@ namespace Fusee.Tutorial.Core
             setButtonPosition(mapButtons[35], 889, 244);
             setButtonPosition(mapButtons[36], 889, 244);
             setButtonPosition(mapButtons[37], 889, 244);
-            setButtonPosition(mapButtons[38], 889, 244);
-            setButtonPosition(mapButtons[39], 889, 244);
-            setButtonPosition(mapButtons[40], 889, 244);
-            setButtonPosition(mapButtons[41], 889, 244);
-            setButtonPosition(mapButtons[42], 889, 244);
-            setButtonPosition(mapButtons[43], 889, 244);
-            setButtonPosition(mapButtons[44], 889, 244);
-            setButtonPosition(mapButtons[45], 889, 244);
-            setButtonPosition(mapButtons[46], 889, 244);
-            setButtonPosition(mapButtons[47], 889, 244);
-            setButtonPosition(mapButtons[48], 889, 244);
-            setButtonPosition(mapButtons[49], 889, 244);
+            setButtonPosition(mapButtons[38], 1081, 337);
+            setButtonPosition(mapButtons[39], 1069, 337);
+            setButtonPosition(mapButtons[40], 1057, 337);
+            setButtonPosition(mapButtons[41], 1008, 337);
+            setButtonPosition(mapButtons[42], 1020, 337);
+            setButtonPosition(mapButtons[43], 1032, 337);
+            setButtonPosition(mapButtons[44], 1044, 337);
+            setButtonPosition(mapButtons[45], 1059, 259);
+            setButtonPosition(mapButtons[46], 1047, 259);
+            setButtonPosition(mapButtons[47], 1035, 259);
+            setButtonPosition(mapButtons[48], 1023, 259);
+            setButtonPosition(mapButtons[49], 1071, 259);
             setButtonPosition(mapButtons[50], 889, 244);
             setButtonPosition(mapButtons[51], 889, 244);
             setButtonPosition(mapButtons[52], 889, 244);
@@ -215,40 +215,40 @@ namespace Fusee.Tutorial.Core
             setButtonPosition(mapButtons[63], 889, 244);
             setButtonPosition(mapButtons[64], 889, 244);
             setButtonPosition(mapButtons[65], 889, 244);
-            setButtonPosition(mapButtons[66], 889, 244);
-            setButtonPosition(mapButtons[67], 889, 244);
-            setButtonPosition(mapButtons[68], 889, 244);
-            setButtonPosition(mapButtons[69], 889, 244);
-            setButtonPosition(mapButtons[70], 889, 244);
-            setButtonPosition(mapButtons[71], 889, 244);
-            setButtonPosition(mapButtons[72], 889, 244);
-            setButtonPosition(mapButtons[73], 889, 244);
-            setButtonPosition(mapButtons[74], 889, 244);
-            setButtonPosition(mapButtons[75], 889, 244);
-            setButtonPosition(mapButtons[76], 889, 244);
-            setButtonPosition(mapButtons[77], 889, 244);
-            setButtonPosition(mapButtons[78], 889, 244);
-            setButtonPosition(mapButtons[79], 889, 244);
-            setButtonPosition(mapButtons[80], 889, 244);
-            setButtonPosition(mapButtons[81], 889, 244);
-            setButtonPosition(mapButtons[82], 889, 244);
-            setButtonPosition(mapButtons[83], 889, 244);
-            setButtonPosition(mapButtons[84], 889, 244);
-            setButtonPosition(mapButtons[85], 889, 244);
-            setButtonPosition(mapButtons[86], 889, 244);
-            setButtonPosition(mapButtons[87], 889, 244);
-            setButtonPosition(mapButtons[88], 889, 244);
-            setButtonPosition(mapButtons[89], 889, 244);
-            setButtonPosition(mapButtons[90], 889, 244);
-            setButtonPosition(mapButtons[91], 889, 244);
-            setButtonPosition(mapButtons[92], 889, 244);
-            setButtonPosition(mapButtons[93], 889, 244);
-            setButtonPosition(mapButtons[94], 889, 244);
-            setButtonPosition(mapButtons[95], 889, 244);
-            setButtonPosition(mapButtons[96], 889, 244);
-            setButtonPosition(mapButtons[97], 889, 244);
-            setButtonPosition(mapButtons[98], 889, 244);
-            setButtonPosition(mapButtons[99], 889, 244);
+            setButtonPosition(mapButtons[66], 1023, 236);
+            setButtonPosition(mapButtons[67], 1035, 236);
+            setButtonPosition(mapButtons[68], 1047, 236);
+            setButtonPosition(mapButtons[69], 1059, 236);
+            setButtonPosition(mapButtons[70], 1008, 301);
+            setButtonPosition(mapButtons[71], 1008, 287);
+            setButtonPosition(mapButtons[72], 999, 243);
+            setButtonPosition(mapButtons[73], 999, 258);
+            setButtonPosition(mapButtons[74], 1058, 183);
+            setButtonPosition(mapButtons[75], 1046, 183);
+            setButtonPosition(mapButtons[76], 1034, 183);
+            setButtonPosition(mapButtons[77], 1022, 183);
+            setButtonPosition(mapButtons[78], 1070, 183);
+            setButtonPosition(mapButtons[79], 1082, 183);
+            setButtonPosition(mapButtons[80], 1147, 176);
+            setButtonPosition(mapButtons[81], 1070, 157);
+            setButtonPosition(mapButtons[82], 1022, 157);
+            setButtonPosition(mapButtons[83], 1034, 157);
+            setButtonPosition(mapButtons[84], 1046, 157);
+            setButtonPosition(mapButtons[85], 1058, 157);
+            setButtonPosition(mapButtons[86], 1135, 176);
+            setButtonPosition(mapButtons[87], 1099, 176);
+            setButtonPosition(mapButtons[88], 1111, 176);
+            setButtonPosition(mapButtons[89], 1123, 176);
+            setButtonPosition(mapButtons[90], 1113, 151);
+            setButtonPosition(mapButtons[91], 1101, 151);
+            setButtonPosition(mapButtons[92], 1089, 151);
+            setButtonPosition(mapButtons[93], 1125, 151);
+            setButtonPosition(mapButtons[94], 1137, 151);
+            setButtonPosition(mapButtons[95], 1206, 146);
+            setButtonPosition(mapButtons[96], 1194, 146);
+            setButtonPosition(mapButtons[97], 1158, 146);
+            setButtonPosition(mapButtons[98], 1170, 146);
+            setButtonPosition(mapButtons[99], 1182, 146);
             setButtonPosition(mapButtons[100], 889, 244);
             setButtonPosition(mapButtons[101], 889, 244);
             setButtonPosition(mapButtons[102], 889, 244);
@@ -257,7 +257,7 @@ namespace Fusee.Tutorial.Core
             setButtonPosition(mapButtons[105], 889, 244);
             setButtonPosition(mapButtons[106], 889, 244);
             setButtonPosition(mapButtons[107], 889, 244);
-            setButtonPosition(mapButtons[108], 889, 244);
+            setButtonPosition(mapButtons[108], 1182, 168);
             setButtonPosition(mapButtons[109], 889, 244);
             setButtonPosition(mapButtons[110], 889, 244);
             setButtonPosition(mapButtons[111], 889, 244);
@@ -266,13 +266,13 @@ namespace Fusee.Tutorial.Core
             setButtonPosition(mapButtons[114], 889, 244);
             setButtonPosition(mapButtons[115], 889, 244);
             setButtonPosition(mapButtons[116], 889, 244);
-            setButtonPosition(mapButtons[117], 889, 244);
-            setButtonPosition(mapButtons[118], 889, 244);
-            setButtonPosition(mapButtons[119], 889, 244);
-            setButtonPosition(mapButtons[120], 889, 244);
-            setButtonPosition(mapButtons[121], 889, 244);
-            setButtonPosition(mapButtons[122], 889, 244);
-            setButtonPosition(mapButtons[123], 889, 244);
+            setButtonPosition(mapButtons[117], 1170, 168);
+            setButtonPosition(mapButtons[118], 1194, 168);
+            setButtonPosition(mapButtons[119], 1158, 168);
+            setButtonPosition(mapButtons[120], 1023, 202);
+            setButtonPosition(mapButtons[121], 1023, 216);
+            setButtonPosition(mapButtons[122], 999, 194);
+            setButtonPosition(mapButtons[123], 999, 179);
             setButtonPosition(mapButtons[124], 942, 276);
             setButtonPosition(mapButtons[125], 942, 261);
             setButtonPosition(mapButtons[126], 915, 209);
@@ -292,7 +292,7 @@ namespace Fusee.Tutorial.Core
             setButtonPosition(mapButtons[140], 928, 161);
             setButtonPosition(mapButtons[141], 901, 161);
             setButtonPosition(mapButtons[142], 889, 174);
-            setButtonPosition(mapButtons[143], 889, 244);
+            setButtonPosition(mapButtons[143], 939, 178);
             setButtonPosition(mapButtons[144], 899, 276);
             setButtonPosition(mapButtons[145], 886, 276);
 #endregion
@@ -503,7 +503,15 @@ namespace Fusee.Tutorial.Core
 
         void mapOnGUIButtonDown(GUIButton sender, GUIButtonEventArgs mea)
         {
-            string name = "Würfel." + mapButtons.FindIndex(a => a == sender).ToString();
+            string name;
+            if (mapButtons.FindIndex(a => a == sender) == 0)
+            {
+                name = "Würfel";
+            }
+            else {
+                name = "Würfel." + mapButtons.FindIndex(a => a == sender).ToString();
+            }
+
             float3 position = _scene.Children.FindNodes(n => n.Name == name).First().GetTransform().Translation;
             position.y = position.y + 100.0f;
             listTowers.Add(new Tower(DeepCopy(_tower), position, 0, 0, 0));
