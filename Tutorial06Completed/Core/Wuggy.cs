@@ -16,11 +16,12 @@ namespace Fusee.Tutorial.Core
         private int health;
         private float3 color;
         private int size;
+        private int money;
 
         private AnimationComponent animList;
         
 
-        public Wuggy(SceneContainer _model, float3 _position, int _size, float3 _color, int _speed, int _health)
+        public Wuggy(SceneContainer _model, float3 _position, int _size, float3 _color, int _speed, int _health, int _money)
         {
             animList = new AnimationComponent();
 
@@ -30,6 +31,7 @@ namespace Fusee.Tutorial.Core
             color = _color;
             speed = _speed;
             health = _health;
+            money = _money;
 
             model.Children.First().GetTransform().Translation = position;
             model.Children.FindNodes(n => n.Name == "Body").First().GetMaterial().Diffuse.Color = _color;

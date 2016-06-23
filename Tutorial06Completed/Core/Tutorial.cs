@@ -42,25 +42,35 @@ namespace Fusee.Tutorial.Core
 
         private Renderer _renderer;
 
+        private Dictionary<int, Tower> listTowers;
+        private List<Wuggy> listWuggys;
+
         private bool isTowerSelected;
         private bool isUgradeMode;
         private int currentSelectedTower;
+
+        private int towerCosts;
 
 #if GUI_SIMPLE
         private GUIHandler guiHandler;
         private GUIPanel guiPanelOverall;
         private GUIPanel guiPanelStatus;
-        private GUIPanel guiPanelMap;
+        private GUIText moneyText;
+        private GUIText healthText;
         private GUIPanel guiPanelShop;
         private GUIPanel guiPanelWaves;
         
         private GUIButton startButton;
         private Font fontCabin;
         private FontMap _guiCabinBlack;
+        private FontMap _guiCabinBlackBig;
         private GUIText guiText;
 
-        private float4 standardColor;
-        
+        private float4 redColor;
+        private float4 greenColor;
+        private float4 blueColor;
+        private float4 yellowColor;
+
         private List<GUIButton> mapButtons;
         //private GUIButton towerButton1;
 #endif
@@ -74,11 +84,7 @@ namespace Fusee.Tutorial.Core
         private GUIHandler guiHandlerTowersUpgrade;
         private GUIButton speedUpgrade;
 #endif
-
-
-        private Dictionary<int, Tower> listTowers;
-        private List<Wuggy> listWuggys;
-
+ 
 
         // Init is called on startup. 
         public override void Init()
@@ -92,6 +98,7 @@ namespace Fusee.Tutorial.Core
 
             isTowerSelected = false;
             isUgradeMode = false;
+            towerCosts = 100;
 
             // Load the scene
             _scene = AssetStorage.Get<SceneContainer>("TDMAPinWuggyFINAL.fus");
@@ -100,12 +107,15 @@ namespace Fusee.Tutorial.Core
 
             _sceneScale = float4x4.CreateScale(0.04f);
 
-            listWuggys.Add(new Wuggy(DeepCopy(_wuggy), new float3(0, 0, 750), 8, new float3(0.2f, 0.9f, 0.2f), 0, 1));
+            listWuggys.Add(new Wuggy(DeepCopy(_wuggy), new float3(0, 0, 750), 8, new float3(0.2f, 0.9f, 0.2f), 0, 1, 100));
 
             // Instantiate our self-written renderer
             _renderer = new Renderer(RC);
 
-            standardColor = new float4(0.9f, 0.1f, 0.0f, 1.0f);
+            redColor = new float4(1.0f, 0.0f, 0.2f, 1.0f);
+            greenColor = new float4(0.4f, 1.0f, 0.0f, 1.0f);
+            blueColor = new float4(0.0f, 0.4f, 1.0f, 1.0f);
+            yellowColor = new float4(0.0f, 0.7f, 0.7f, 1.0f);
 
 #if GUI_SIMPLE
             guiHandler = new GUIHandler();
@@ -114,10 +124,10 @@ namespace Fusee.Tutorial.Core
             fontCabin = AssetStorage.Get<Font>("Cabin.ttf");
             fontCabin.UseKerning = true;
             _guiCabinBlack = new FontMap(fontCabin, 18);
+            _guiCabinBlackBig = new FontMap(fontCabin, 25);
 
             guiText = new GUIText("Defend!", _guiCabinBlack, 310, 35);
             guiText.TextColor = new float4(0.05f, 0.25f, 0.15f, 0.8f);
-
             guiHandler.Add(guiText);
 
             // panel
@@ -129,9 +139,13 @@ namespace Fusee.Tutorial.Core
             guiPanelStatus.PanelColor = new float4(1.0f, 0.5f, 0.5f, 1.0f);
             guiHandler.Add(guiPanelStatus);
 
-            /*guiPanelMap = new GUIPanel("Map", _guiCabinBlack, 880, 120, 400, 250);
-            guiPanelMap.PanelColor = new float4(0.0f, 0.5f, 0.5f, 1.0f);
-            guiHandler.Add(guiPanelMap);*/
+            healthText = new GUIText("10", _guiCabinBlackBig, 900, 60);
+            healthText.TextColor = new float4(0.9f, 0.0f, 0.0f, 1.0f);
+            guiHandler.Add(healthText);
+
+            moneyText = new GUIText("1000", _guiCabinBlackBig, 900, 90);
+            moneyText.TextColor = new float4(0.0f, 0.9f, 0.1f, 1.0f);
+            guiHandler.Add(moneyText);
 
             guiPanelShop = new GUIPanel("Shop", _guiCabinBlack, 880, 370, 400, 250);
             guiPanelShop.PanelColor = new float4(0.5f, 0.0f, 0.5f, 1.0f);
@@ -146,7 +160,7 @@ namespace Fusee.Tutorial.Core
             for (int i = 0; i < 146; i++)
             {
                 mapButtons.Add(new GUIButton(500, 500, 8, 8));
-                mapButtons[i].ButtonColor = standardColor;
+                mapButtons[i].ButtonColor = blueColor;
                 mapButtons[i].BorderWidth = 0;
                 mapButtons[i].OnGUIButtonDown += mapOnGUIButtonDown;
                 mapButtons[i].OnGUIButtonEnter += mapOnGUIButtonEnter;
@@ -460,8 +474,6 @@ namespace Fusee.Tutorial.Core
                 _renderer.Traverse(w.Model.Children);
             }
 
-
-
             // Setup Minimap
             RC.Projection = float4x4.CreateOrthographic(12750, 6955, -1000000.00f, 50000);
             _renderer.View = float4x4.CreateRotationX(-3.141592f / 2) * float4x4.CreateTranslation(0, 0, -300);
@@ -482,7 +494,7 @@ namespace Fusee.Tutorial.Core
                 _renderer.Traverse(w.Model.Children);
             }
 
-
+            updateStatusPanel();
 
             // Swap buffers: Show the contents of the backbuffer (containing the currently rerndered farame) on the front buffer.
             Present();
@@ -526,18 +538,45 @@ namespace Fusee.Tutorial.Core
 
         private void mapOnGUIButtonLeave(GUIButton sender, GUIButtonEventArgs mea)
         {
-            sender.ButtonColor = standardColor;
+            int tempTowerNumber = mapButtons.FindIndex(a => a == sender);
+
+            if (currentSelectedTower != tempTowerNumber)
+            {
+                if (listTowers.ContainsKey(tempTowerNumber))
+                {
+                    sender.ButtonColor = redColor;
+                }
+                else
+                {
+                    sender.ButtonColor = blueColor;
+                }
+            }
+            
             SetCursor(CursorType.Standard);
         }
 
         private void mapOnGUIButtonEnter(GUIButton sender, GUIButtonEventArgs mea)
         {
-            sender.ButtonColor = new float4(0.0f, 0.6f, 0.2f, 0.4f);
+            sender.ButtonColor = greenColor;
             SetCursor(CursorType.Hand);
         }
 
         void mapOnGUIButtonDown(GUIButton sender, GUIButtonEventArgs mea)
         {
+            if(isTowerSelected)
+            {
+                int tempTowerNumber = mapButtons.FindIndex(a => a == sender);
+
+                if (listTowers.ContainsKey(tempTowerNumber))
+                {
+                    mapButtons[currentSelectedTower].ButtonColor = redColor;
+                }
+                else
+                {
+                    mapButtons[currentSelectedTower].ButtonColor = blueColor;
+                }
+            }
+
             if (currentSelectedTower == mapButtons.FindIndex(a => a == sender) || isTowerSelected == false)
             {
                 isTowerSelected = !isTowerSelected;
@@ -551,28 +590,39 @@ namespace Fusee.Tutorial.Core
             else
             {
                 isUgradeMode = false;
-            }  
+            }
+
+            sender.ButtonColor = yellowColor;
         }
 
         void buyTower(GUIButton sender, GUIButtonEventArgs mea)
         {
-            string name;
-            if (currentSelectedTower == 0)
+            if (Player.Money >= towerCosts)
             {
-                name = "Würfel";
-            }
-            else {
-                name = "Würfel." + currentSelectedTower.ToString();
-            }
+                string name;
+                if (currentSelectedTower == 0)
+                {
+                    name = "Würfel";
+                }
+                else {
+                    name = "Würfel." + currentSelectedTower.ToString();
+                }
 
-            float3 position = _scene.Children.FindNodes(n => n.Name == name).First().GetTransform().Translation;
-            position.y = position.y + 100.0f;
-            listTowers.Add(currentSelectedTower, new Tower(DeepCopy(_tower), position, 0, 0, 0));
+                float3 position = _scene.Children.FindNodes(n => n.Name == name).First().GetTransform().Translation;
+                position.y = position.y + 100.0f;
+                listTowers.Add(currentSelectedTower, new Tower(DeepCopy(_tower), position, 0, 0, 0));
 
-            isUgradeMode = true;
+                Player.Money -= towerCosts;
+                isUgradeMode = true;
+                //mapButtons[currentSelectedTower].ButtonColor = redColor;
+            }
         }
 
-
+        void updateStatusPanel()
+        {
+            moneyText.Text = Player.Money.ToString();
+            healthText.Text = Player.VillageHealth.ToString();
+        } 
 #endif
 
         public static T DeepCopy<T>(T source) where T : class
