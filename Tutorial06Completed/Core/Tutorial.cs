@@ -53,7 +53,6 @@ namespace Fusee.Tutorial.Core
 
 #if GUI_SIMPLE
         private GUIHandler guiHandler;
-        private GUIPanel guiPanelOverall;
         private GUIPanel guiPanelStatus;
         private GUIText moneyText;
         private GUIText healthText;
@@ -70,6 +69,8 @@ namespace Fusee.Tutorial.Core
         private float4 greenColor;
         private float4 blueColor;
         private float4 yellowColor;
+        private float4 whiteColor;
+        private float4 cyanColor;
 
         private List<GUIButton> mapButtons;
         //private GUIButton towerButton1;
@@ -82,9 +83,14 @@ namespace Fusee.Tutorial.Core
 
 #if GUI_SIMPLE
         private GUIHandler guiHandlerTowersUpgrade;
-        private GUIButton speedUpgrade;
+        private GUIButton speedUpgradeText;
+        private GUIButton speedUpgradeButton;
+        private GUIButton rangeUpgradeText;
+        private GUIButton rangeUpgradeButton;
+        private GUIButton damageUpgradeText;
+        private GUIButton damageUpgradeButton;
 #endif
- 
+
 
         // Init is called on startup. 
         public override void Init()
@@ -115,13 +121,15 @@ namespace Fusee.Tutorial.Core
             redColor = new float4(1.0f, 0.0f, 0.2f, 1.0f);
             greenColor = new float4(0.4f, 1.0f, 0.0f, 1.0f);
             blueColor = new float4(0.0f, 0.4f, 1.0f, 1.0f);
-            yellowColor = new float4(0.0f, 0.7f, 0.7f, 1.0f);
+            yellowColor = new float4(1.0f, 0.9f, 0.0f, 1.0f);
+            whiteColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
+            cyanColor = new float4(0.0f, 0.7f, 0.7f, 1.0f);
 
 #if GUI_SIMPLE
             guiHandler = new GUIHandler();
             guiHandler.AttachToContext(RC);
 
-            fontCabin = AssetStorage.Get<Font>("Cabin.ttf");
+            fontCabin = AssetStorage.Get<Font>("AmericanCaptain.ttf");
             fontCabin.UseKerning = true;
             _guiCabinBlack = new FontMap(fontCabin, 18);
             _guiCabinBlackBig = new FontMap(fontCabin, 25);
@@ -130,30 +138,34 @@ namespace Fusee.Tutorial.Core
             guiText.TextColor = new float4(0.05f, 0.25f, 0.15f, 0.8f);
             guiHandler.Add(guiText);
 
-            // panel
-            guiPanelOverall = new GUIPanel("Defend the Village", _guiCabinBlack, 880, 0, 400, 720);
-            guiPanelOverall.PanelColor = new float4(0.0f, 0.5f, 0.5f, 1.0f);
-            //guiHandler.Add(guiPanelOverall);
-
             guiPanelStatus = new GUIPanel("Defend the Village", _guiCabinBlack, 880, 0, 400, 120);
-            guiPanelStatus.PanelColor = new float4(1.0f, 0.5f, 0.5f, 1.0f);
+            guiPanelStatus.PanelColor = new float4(0.0f, 0.38f, 0.69f, 1.0f);
+            guiPanelStatus.BorderWidth = 0;
             guiHandler.Add(guiPanelStatus);
 
-            healthText = new GUIText("10", _guiCabinBlackBig, 900, 60);
+            healthText = new GUIText("Health Village: 10", _guiCabinBlackBig, 900, 60);
             healthText.TextColor = new float4(0.9f, 0.0f, 0.0f, 1.0f);
             guiHandler.Add(healthText);
 
-            moneyText = new GUIText("1000", _guiCabinBlackBig, 900, 90);
+            moneyText = new GUIText("Money: 1000", _guiCabinBlackBig, 900, 90);
             moneyText.TextColor = new float4(0.0f, 0.9f, 0.1f, 1.0f);
             guiHandler.Add(moneyText);
 
             guiPanelShop = new GUIPanel("Shop", _guiCabinBlack, 880, 370, 400, 250);
-            guiPanelShop.PanelColor = new float4(0.5f, 0.0f, 0.5f, 1.0f);
+            guiPanelShop.PanelColor = new float4(0.0f, 0.38f, 0.69f, 1.0f);
+            guiPanelShop.BorderWidth = 0;
             guiHandler.Add(guiPanelShop);
 
             guiPanelWaves = new GUIPanel("Wave", _guiCabinBlack, 880, 620, 400, 100);
-            guiPanelWaves.PanelColor = new float4(0.5f, 0.5f, 0.0f, 1.0f);
+            guiPanelWaves.PanelColor = new float4(0.0f, 0.38f, 0.69f, 1.0f);
+            guiPanelWaves.BorderWidth = 0;
             guiHandler.Add(guiPanelWaves);
+
+            startButton = new GUIButton("Start Wave", _guiCabinBlack, 900, 650, 360, 50);
+            //mapButtons[i].OnGUIButtonDown += mapOnGUIButtonDown;
+            startButton.OnGUIButtonEnter += shopButtonEnter;
+            startButton.OnGUIButtonLeave += shopButtonLeave;
+            guiHandler.Add(startButton);
 
             mapButtons = new List<GUIButton>();
 
@@ -328,15 +340,52 @@ namespace Fusee.Tutorial.Core
 
             guiHandlerTowers = new GUIHandler();
             guiHandlerTowers.AttachToContext(RC);
-            buyButton = new GUIButton("Buy Tower", _guiCabinBlack, 880, 400, 400, 50);
+            buyButton = new GUIButton("Buy Tower (100)", _guiCabinBlack, 900, 400, 360, 50);
             buyButton.OnGUIButtonDown += buyTower;
+            buyButton.OnGUIButtonEnter += shopButtonEnter;
+            buyButton.OnGUIButtonLeave += shopButtonLeave;
             guiHandlerTowers.Add(buyButton);
 
             guiHandlerTowersUpgrade = new GUIHandler();
             guiHandlerTowersUpgrade.AttachToContext(RC);
-            speedUpgrade = new GUIButton("Speed Upgrade", _guiCabinBlack, 880, 500, 400, 50);
+
+            speedUpgradeText = new GUIButton("Shot Frequency: 1", _guiCabinBlack, 900, 400, 180, 50);
+            speedUpgradeText.ButtonColor = new float4(0.0f, 0.38f, 0.69f, 1.0f);
+            speedUpgradeText.TextColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
+            speedUpgradeText.BorderWidth = 0;
+            guiHandlerTowersUpgrade.Add(speedUpgradeText);
+
+            speedUpgradeButton = new GUIButton("Speed Upgrade", _guiCabinBlack, 1080, 400, 180, 50);
             //mapButtons[i].OnGUIButtonDown += mapOnGUIButtonDown;
-            guiHandlerTowersUpgrade.Add(speedUpgrade);
+            speedUpgradeButton.OnGUIButtonEnter += shopButtonEnter;
+            speedUpgradeButton.OnGUIButtonLeave += shopButtonLeave;
+            guiHandlerTowersUpgrade.Add(speedUpgradeButton);
+
+            rangeUpgradeText = new GUIButton("Range: 1", _guiCabinBlack, 900, 475, 180, 50);
+            rangeUpgradeText.ButtonColor = new float4(0.0f, 0.38f, 0.69f, 1.0f);
+            rangeUpgradeText.TextColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
+            rangeUpgradeText.BorderWidth = 0;
+            guiHandlerTowersUpgrade.Add(rangeUpgradeText);
+
+            rangeUpgradeButton = new GUIButton("Range Upgrade", _guiCabinBlack, 1080, 475, 180, 50);
+            //mapButtons[i].OnGUIButtonDown += mapOnGUIButtonDown;
+            rangeUpgradeButton.OnGUIButtonEnter += shopButtonEnter;
+            rangeUpgradeButton.OnGUIButtonLeave += shopButtonLeave;
+            guiHandlerTowersUpgrade.Add(rangeUpgradeButton);
+
+            damageUpgradeText = new GUIButton("Damage: 1", _guiCabinBlack, 900, 550, 180, 50);
+            damageUpgradeText.ButtonColor = new float4(0.0f, 0.38f, 0.69f, 1.0f);
+            damageUpgradeText.TextColor = new float4(1.0f, 1.0f, 1.0f, 1.0f);
+            damageUpgradeText.BorderWidth = 0;
+            guiHandlerTowersUpgrade.Add(damageUpgradeText);
+
+            damageUpgradeButton = new GUIButton("Damage Upgrade", _guiCabinBlack, 1080, 550, 180, 50);
+            //mapButtons[i].OnGUIButtonDown += mapOnGUIButtonDown;
+            damageUpgradeButton.OnGUIButtonEnter += shopButtonEnter;
+            damageUpgradeButton.OnGUIButtonLeave += shopButtonLeave;
+            guiHandlerTowersUpgrade.Add(damageUpgradeButton);
+
+
 #endif
 
             // Set the clear color for the backbuffer
@@ -557,7 +606,7 @@ namespace Fusee.Tutorial.Core
 
         private void mapOnGUIButtonEnter(GUIButton sender, GUIButtonEventArgs mea)
         {
-            sender.ButtonColor = greenColor;
+            sender.ButtonColor = cyanColor;
             SetCursor(CursorType.Hand);
         }
 
@@ -597,7 +646,7 @@ namespace Fusee.Tutorial.Core
 
         void buyTower(GUIButton sender, GUIButtonEventArgs mea)
         {
-            if (Player.Money >= towerCosts)
+            if (Player.Money >= towerCosts && isTowerSelected == true && isUgradeMode == false)
             {
                 string name;
                 if (currentSelectedTower == 0)
@@ -618,10 +667,20 @@ namespace Fusee.Tutorial.Core
             }
         }
 
+        void shopButtonEnter(GUIButton sender, GUIButtonEventArgs mea)
+        {
+            sender.ButtonColor = cyanColor;
+        }
+
+        void shopButtonLeave(GUIButton sender, GUIButtonEventArgs mea)
+        {
+            sender.ButtonColor = whiteColor;
+        }
+
         void updateStatusPanel()
         {
-            moneyText.Text = Player.Money.ToString();
-            healthText.Text = Player.VillageHealth.ToString();
+            moneyText.Text = "Money: " + Player.Money.ToString();
+            healthText.Text = "Health Village: " + Player.VillageHealth.ToString();
         } 
 #endif
 

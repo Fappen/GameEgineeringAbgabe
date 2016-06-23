@@ -8,10 +8,6 @@ C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\tmp\Ob
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Desktop\Debug\Fusee.Tutorial.Desktop.exe
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Desktop\Debug\Fusee.Tutorial.Desktop.pdb
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\Cabin.ttf
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\Model.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\Berge.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TDMap.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TDMAPinWuggy.fus
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TDMAPinWuggyFINAL.fus
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\Leaves.jpg
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\WuggyLand.fus
@@ -28,9 +24,6 @@ D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Des
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Desktop\Debug\Fusee.Tutorial06.Desktop.csprojResolveAssemblyReference.cache
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Desktop\Debug\Fusee.Tutorial.Desktop.exe
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Desktop\Debug\Fusee.Tutorial.Desktop.pdb
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TowerFancyMat.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TowerNormalMat.fus
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TowerRed.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\Wuggy.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\Wuggy_exp.fus
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\WuggyFromLand.fus
+C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\AmericanCaptain.ttf

@@ -7,10 +7,6 @@ C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\De
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Core\Debug\Fusee.Tutorial.Core.dll
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Core\Debug\Fusee.Tutorial.Core.pdb
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\Cabin.ttf
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\Model.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\Berge.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\TDMap.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\TDMAPinWuggy.fus
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\TDMAPinWuggyFINAL.fus
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\Leaves.jpg
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\WuggyLand.fus
@@ -27,10 +23,7 @@ D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Lib
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Core\Debug\Fusee.Tutorial06.Core.csprojResolveAssemblyReference.cache
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Core\Debug\Fusee.Tutorial.Core.dll
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Core\Debug\Fusee.Tutorial.Core.pdb
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\TowerFancyMat.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\TowerNormalMat.fus
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee.Tutorial.Core\Debug\Fusee.Tutorial06.Core.csprojResolveAssemblyReference.cache
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\TowerRed.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\Wuggy.fus
-C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\Wuggy_exp.fus
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\WuggyFromLand.fus
+C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Libraries\Assets\AmericanCaptain.ttf
