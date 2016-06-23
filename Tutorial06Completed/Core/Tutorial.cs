@@ -42,6 +42,10 @@ namespace Fusee.Tutorial.Core
 
         private Renderer _renderer;
 
+        private bool isTowerSelected;
+        private bool isUgradeMode;
+        private int currentSelectedTower;
+
 #if GUI_SIMPLE
         private GUIHandler guiHandler;
         private GUIPanel guiPanelOverall;
@@ -62,16 +66,17 @@ namespace Fusee.Tutorial.Core
 #endif
 
 #if GUI_SIMPLE
-        private GUIHandler guiHandlerMap;
-        private GUIButton block1;
-        private GUIPanel panel1;
-        private GUIPanel panel2;
-        private GUIPanel panel3;
-        private GUIPanel panel4;
+        private GUIHandler guiHandlerTowers;
+        private GUIButton buyButton;
+#endif
+
+#if GUI_SIMPLE
+        private GUIHandler guiHandlerTowersUpgrade;
+        private GUIButton speedUpgrade;
 #endif
 
 
-        private List<Tower> listTowers;
+        private Dictionary<int, Tower> listTowers;
         private List<Wuggy> listWuggys;
 
 
@@ -82,8 +87,11 @@ namespace Fusee.Tutorial.Core
             Width = 1295;
             Height = 760;
 
-            listTowers = new List<Tower>();
+            listTowers = new Dictionary<int, Tower>();
             listWuggys = new List<Wuggy>();
+
+            isTowerSelected = false;
+            isUgradeMode = false;
 
             // Load the scene
             _scene = AssetStorage.Get<SceneContainer>("TDMAPinWuggyFINAL.fus");
@@ -297,12 +305,24 @@ namespace Fusee.Tutorial.Core
             setButtonPosition(mapButtons[145], 886, 276);
 #endregion
 
-
             foreach (GUIButton gb in mapButtons)
             {
                 guiHandler.Add(gb);
             }
 
+
+
+            guiHandlerTowers = new GUIHandler();
+            guiHandlerTowers.AttachToContext(RC);
+            buyButton = new GUIButton("Buy Tower", _guiCabinBlack, 880, 400, 400, 50);
+            buyButton.OnGUIButtonDown += buyTower;
+            guiHandlerTowers.Add(buyButton);
+
+            guiHandlerTowersUpgrade = new GUIHandler();
+            guiHandlerTowersUpgrade.AttachToContext(RC);
+            speedUpgrade = new GUIButton("Speed Upgrade", _guiCabinBlack, 880, 500, 400, 50);
+            //mapButtons[i].OnGUIButtonDown += mapOnGUIButtonDown;
+            guiHandlerTowersUpgrade.Add(speedUpgrade);
 #endif
 
             // Set the clear color for the backbuffer
@@ -396,11 +416,23 @@ namespace Fusee.Tutorial.Core
             RC.Viewport(0, 0, 1280, 720);
 
 
+#if GUI_SIMPLE
+            if (isTowerSelected == true)
+            {
+                if (isUgradeMode == true)
+                {
+                    guiHandlerTowersUpgrade.RenderGUI();
+                }
+                else {
+                    guiHandlerTowers.RenderGUI();
+                }
+            }
+#endif
 
 #if GUI_SIMPLE
             guiHandler.RenderGUI();
 #endif
-            
+
             RC.SetRenderState(new RenderStateSet
             {
                 AlphaBlendEnable = false,
@@ -418,7 +450,7 @@ namespace Fusee.Tutorial.Core
             RC.SetShader(_renderer.shader);
             _renderer.Traverse(_scene.Children);
 
-            foreach (Tower t in listTowers)
+            foreach (Tower t in listTowers.Values)
             {
                 _renderer.Traverse(t.Model.Children);
             }
@@ -427,7 +459,8 @@ namespace Fusee.Tutorial.Core
             {
                 _renderer.Traverse(w.Model.Children);
             }
-            
+
+
 
             // Setup Minimap
             RC.Projection = float4x4.CreateOrthographic(12750, 6955, -1000000.00f, 50000);
@@ -439,7 +472,7 @@ namespace Fusee.Tutorial.Core
             _renderer.Traverse(_scene.Children);
 
 
-            foreach (Tower t in listTowers)
+            foreach (Tower t in listTowers.Values)
             {
                 _renderer.Traverse(t.Model.Children);
             }
@@ -448,6 +481,8 @@ namespace Fusee.Tutorial.Core
             {
                 _renderer.Traverse(w.Model.Children);
             }
+
+
 
             // Swap buffers: Show the contents of the backbuffer (containing the currently rerndered farame) on the front buffer.
             Present();
@@ -503,22 +538,38 @@ namespace Fusee.Tutorial.Core
 
         void mapOnGUIButtonDown(GUIButton sender, GUIButtonEventArgs mea)
         {
+            if (currentSelectedTower == mapButtons.FindIndex(a => a == sender) || isTowerSelected == false)
+            {
+                isTowerSelected = !isTowerSelected;
+            }
+
+            currentSelectedTower = mapButtons.FindIndex(a => a == sender);
+            if (listTowers.ContainsKey(currentSelectedTower))
+            {
+                isUgradeMode = true;
+            }
+            else
+            {
+                isUgradeMode = false;
+            }  
+        }
+
+        void buyTower(GUIButton sender, GUIButtonEventArgs mea)
+        {
             string name;
-            if (mapButtons.FindIndex(a => a == sender) == 0)
+            if (currentSelectedTower == 0)
             {
                 name = "Würfel";
             }
             else {
-                name = "Würfel." + mapButtons.FindIndex(a => a == sender).ToString();
+                name = "Würfel." + currentSelectedTower.ToString();
             }
 
             float3 position = _scene.Children.FindNodes(n => n.Name == name).First().GetTransform().Translation;
             position.y = position.y + 100.0f;
-            listTowers.Add(new Tower(DeepCopy(_tower), position, 0, 0, 0));
-            /*Random random = new Random();
-            for (int i = 0; i < 10; i++) {
-                listTowers.Add(new Tower(DeepCopy(_tower), new float3(random.Next(0, 1000), random.Next(0, 1000), random.Next(0, 1000)), 0, 0, 0));
-            }*/
+            listTowers.Add(currentSelectedTower, new Tower(DeepCopy(_tower), position, 0, 0, 0));
+
+            isUgradeMode = true;
         }
 
 
