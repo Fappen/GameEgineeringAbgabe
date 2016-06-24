@@ -14,10 +14,6 @@ D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Des
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\PixelShader.frag
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\VertexShader.vert
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\Cabin.ttf
-D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\Model.fus
-D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\Berge.fus
-D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TDMap.fus
-D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TDMAPinWuggy.fus
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TDMAPinWuggyFINAL.fus
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Fusee.Tutorial.Desktop.exe
 D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Fusee.Tutorial.Desktop.pdb
@@ -27,3 +23,6 @@ D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\tmp\Obj\Fusee
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TowerRed.fus
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\WuggyFromLand.fus
 C:\Users\Fabian\Documents\GitHub\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\AmericanCaptain.ttf
+D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\TowerRed.fus
+D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\WuggyFromLand.fus
+D:\Game-Engineering\Fusee\GameEgineeringAbgabe\Tutorial06Completed\bin\Debug\Desktop\Assets\AmericanCaptain.ttf
