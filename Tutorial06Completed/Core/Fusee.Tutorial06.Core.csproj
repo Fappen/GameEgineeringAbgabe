@@ -83,6 +83,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(FuseeRoot)bin\$(Configuration)\Libraries\Fusee.Engine.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Fusee.Xirkit">
+      <HintPath>..\..\..\Fusee\bin\Debug\Libraries\Fusee.Xirkit.dll</HintPath>
+    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\..\..\Fusee\bin\Debug\Libraries\protobuf-net.dll</HintPath>
     </Reference>
