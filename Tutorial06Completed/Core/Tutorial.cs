@@ -65,6 +65,9 @@ namespace Fusee.Tutorial.Core
         private FontMap _guiCabinBlackBig;
         private GUIText guiText;
 
+        private GUIButton previousSelectedTowerButton;
+        private int previousSelectedTower;
+
         private float4 redColor;
         private float4 greenColor;
         private float4 blueColor;
@@ -607,38 +610,51 @@ namespace Fusee.Tutorial.Core
                     sender.ButtonColor = blueColor;
                 }
             }
+            else if (currentSelectedTower == tempTowerNumber)
+            {
+                sender.ButtonColor = yellowColor;
+            }
             
             SetCursor(CursorType.Standard);
         }
 
         private void mapOnGUIButtonEnter(GUIButton sender, GUIButtonEventArgs mea)
         {
-            sender.ButtonColor = cyanColor;
+            int tempTowerNumber = mapButtons.FindIndex(a => a == sender);
+
+            if (isTowerSelected && currentSelectedTower == tempTowerNumber)
+            {
+                sender.ButtonColor = yellowColor;
+            }
+            else
+            {
+                sender.ButtonColor = cyanColor;
+            }
+
             SetCursor(CursorType.Hand);
         }
 
         void mapOnGUIButtonDown(GUIButton sender, GUIButtonEventArgs mea)
         {
-            if(isTowerSelected)
-            {
-                int tempTowerNumber = mapButtons.FindIndex(a => a == sender);
+            previousSelectedButtonColor();
 
-                if (listTowers.ContainsKey(tempTowerNumber))
-                {
-                    mapButtons[currentSelectedTower].ButtonColor = redColor;
-                }
-                else
-                {
-                    mapButtons[currentSelectedTower].ButtonColor = blueColor;
-                }
-            }
 
             if (currentSelectedTower == mapButtons.FindIndex(a => a == sender) || isTowerSelected == false)
             {
                 isTowerSelected = !isTowerSelected;
             }
 
-            currentSelectedTower = mapButtons.FindIndex(a => a == sender);
+            if (isTowerSelected)
+            {
+                currentSelectedTower = mapButtons.FindIndex(a => a == sender);
+                previousSelectedTower = currentSelectedTower;
+                previousSelectedTowerButton = sender;
+            }
+            else
+            {
+                currentSelectedTower = -1;
+            }
+
             if (listTowers.ContainsKey(currentSelectedTower))
             {
                 isUgradeMode = true;
@@ -688,7 +704,23 @@ namespace Fusee.Tutorial.Core
         {
             moneyText.Text = "Money: " + Player.Money.ToString();
             healthText.Text = "Health Village: " + Player.VillageHealth.ToString();
-        } 
+        }
+
+        void previousSelectedButtonColor()
+        {
+            if (previousSelectedTowerButton != null)
+            {
+                if (listTowers.ContainsKey(previousSelectedTower))
+                {
+                    previousSelectedTowerButton.ButtonColor = redColor;
+                }
+                else
+                {
+                    previousSelectedTowerButton.ButtonColor = blueColor;
+                }
+            }
+        }
+
 #endif
 
         public static T DeepCopy<T>(T source) where T : class
