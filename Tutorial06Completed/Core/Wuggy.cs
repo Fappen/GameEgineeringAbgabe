@@ -41,10 +41,32 @@ namespace Fusee.Tutorial.Core
 
         public void SetUpAnimations()
         {
+<<<<<<< HEAD
+            animationContainer = new AnimationTrackContainer();
+            //animationComponent = new AnimationComponent();
+            animation = new Animation();
+            channel = new Channel<float3>(Lerp.Float3Lerp);
+
+            animationContainer.KeyFrames = new List<AnimationKeyContainerBase>();
+            animationContainer.KeyFrames.Add(new AnimationKeyContainerFloat3 { Time = 0, Value = new float3(0, 0, 0) });
+            animationContainer.KeyFrames.Add(new AnimationKeyContainerFloat3 { Time = 2000, Value = new float3(80, 80, 80) });
+            //animationComponent.AnimationTracks = new List<AnimationTrackContainer>();
+            //animationComponent.AnimationTracks.Add(animationContainer);
+
+            foreach (AnimationKeyContainerFloat3 key in animationContainer.KeyFrames)
+            {
+                channel.AddKeyframe(new Keyframe<float3>(key.Time, key.Value));
+            }
+
+            //model.Children.First().Components.Find(x => x.Name == "Animation") = animationComponent;
+            animation.AddAnimation(channel, model.Children[0].GetTransform(), "Translation"); // _wuggy.Children.[0].Components.[0].Translation
+            
+=======
             AnimationTrackContainer anim1 = new AnimationTrackContainer();
             AnimationKeyContainerFloat3 tempAF3;
 
             tempAF3 = new AnimationKeyContainerFloat3(); tempAF3.Time = 0; tempAF3.Value = new float3(0, 0, 0); anim1.KeyFrames.Add(tempAF3);
+>>>>>>> parent of 76709e3... Push MIT FEHLER in den Animationen
         }
 
         public SceneContainer Model { get { return model; } set { model = value; } }

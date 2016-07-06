@@ -165,7 +165,7 @@ namespace Fusee.Tutorial.Core
             guiHandler.Add(guiPanelWaves);
 
             startButton = new GUIButton("Start Wave", _guiCabinBlack, 900, 650, 360, 50);
-            //mapButtons[i].OnGUIButtonDown += mapOnGUIButtonDown;
+            startButton.OnGUIButtonDown += startButtonClicked;
             startButton.OnGUIButtonEnter += shopButtonEnter;
             startButton.OnGUIButtonLeave += shopButtonLeave;
             guiHandler.Add(startButton);
@@ -548,6 +548,11 @@ namespace Fusee.Tutorial.Core
 
             updateStatusPanel();
 
+<<<<<<< HEAD
+            
+
+=======
+>>>>>>> parent of 76709e3... Push MIT FEHLER in den Animationen
             // Swap buffers: Show the contents of the backbuffer (containing the currently rerndered farame) on the front buffer.
             Present();
 
@@ -691,6 +696,14 @@ namespace Fusee.Tutorial.Core
         void shopButtonLeave(GUIButton sender, GUIButtonEventArgs mea)
         {
             sender.ButtonColor = whiteColor;
+        }
+
+        void startButtonClicked(GUIButton sender, GUIButtonEventArgs mea)
+        {
+            foreach (Wuggy w in listWuggys)
+            {
+                w.Animation.Animate(Time.DeltaTime);
+            }
         }
 
         void updateStatusPanel()
