@@ -63,8 +63,8 @@ namespace Fusee.Tutorial.Core
             }
 
             //model.Children.First().Components.Find(x => x.Name == "Animation") = animationComponent;
-            animation.AddAnimation(channel, model, "transform.Translation"); // _wuggy.Children.[0].Components.[0].Translation
-
+            animation.AddAnimation(channel, model.Children[0].GetTransform(), "Translation"); // _wuggy.Children.[0].Components.[0].Translation
+            
         }
 
         public SceneContainer Model { get { return model; } set { model = value; } }
