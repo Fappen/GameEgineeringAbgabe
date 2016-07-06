@@ -117,7 +117,7 @@ namespace Fusee.Tutorial.Core
             _sceneScale = float4x4.CreateScale(0.04f);
 
             listWuggys.Add(new Wuggy(DeepCopy(_wuggy), new float3(0, 0, 750), 8, new float3(0.2f, 0.9f, 0.2f), 0, 1, 100));
-            
+
             // Instantiate our self-written renderer
             _renderer = new Renderer(RC);
 
@@ -407,8 +407,6 @@ namespace Fusee.Tutorial.Core
                 _keys = true;
             }
 
-            //SceneRenderer sceneRenderer = new SceneRenderer(_scene).Animate();
-
             var curDamp = (float)System.Math.Exp(-Damping * DeltaTime);
 
             // Zoom & Roll
@@ -550,8 +548,11 @@ namespace Fusee.Tutorial.Core
 
             updateStatusPanel();
 
+<<<<<<< HEAD
             
 
+=======
+>>>>>>> parent of 76709e3... Push MIT FEHLER in den Animationen
             // Swap buffers: Show the contents of the backbuffer (containing the currently rerndered farame) on the front buffer.
             Present();
 
